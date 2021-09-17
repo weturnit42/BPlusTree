@@ -20,6 +20,15 @@ class Node {
         isRoot = false;
     }
 
+    public Node(int val){
+        key = new ArrayList<Integer>(3);
+        pointer = new ArrayList<Node>(4);
+        this.key.add(val);
+        this.pointer.add(null);
+        this.pointer.add(null);
+        isRoot = false;
+    }
+
     public Node(int val, Node left, Node right){
         key = new ArrayList<Integer>(3);
         pointer = new ArrayList<Node>(4);
@@ -29,35 +38,75 @@ class Node {
         isRoot = false;
     }
 
-    public void insert(int val){
-        if()
-        if(this.key.size() <= 3) {
-            this.key.add(val);
-            this.pointer.add(null);
-            Collections.sort(this.key);
+    public Node findPlace(int val) {
+        if (this.key.contains(val))
+            return this;
 
-            if(this.key.size() == 3){
-                if(isRoot){
-                    for(int i=0;i<this.key.size();i++)
-                        System.out.println(this.key.get(i));
-                    for(int i=0;i<this.pointer.size();i++)
-                        System.out.println(this.pointer.get(i));
+        else if (this.key.size() == 1) {
+            if (this.pointer.get(0) == null) {
+                return this;
+            }
 
-                    int mid = this.key.get(1);
-                    System.out.println(mid);
-                    Node left = new Node(this.key.get(0), this.pointer.get(0), this.pointer.get(1));
-                    Node right = new Node(this.key.get(2), this.pointer.get(2), this.pointer.get(3));
-                    
-                    this.key.clear();
-                    this.pointer.clear();
-                    
-                    this.key.add(mid);
-                    this.pointer.add(left);
-                    this.pointer.add(right);
+            if (val < this.key.get(0))
+                return this.pointer.get(0).findPlace(val);
+            else if (val > this.key.get(0))
+                return this.pointer.get(1).findPlace(val);
+        }
 
-                    left.parent = this;
-                    right.parent = this;
+        else if (this.key.size() == 2) {
+            if (this.pointer.get(0) == null) {
+                return this;
+            }
+
+            if (val < this.key.get(0))
+                return this.pointer.get(0).findPlace(val);
+            else if (val > this.key.get(0) && val < this.key.get(1))
+                return this.pointer.get(1).findPlace(val);
+            else if (val > this.key.get(1))
+                return this.pointer.get(2).findPlace(val);
+        }
+
+        return this;
+    }
+
+    public void insert(Node node, int val){
+        node = node.findPlace(val);
+        if(node.key.size() <= 3) {
+            node.key.add(val);
+            node.pointer.add(null);
+            Collections.sort(node.key);
+
+            if(node.key.size() == 3){
+
+                if(node.isRoot == true){
+                    int mid = node.key.get(1);
+                    Node left = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1));
+                    Node right = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3));
                     
+                    node.key.clear();
+                    node.pointer.clear();
+                    
+                    node.key.add(mid);
+                    node.pointer.add(left);
+                    node.pointer.add(right);
+
+                    left.parent = node;
+                    right.parent = node;
+                    
+                }
+                else{
+                    int mid = node.key.get(1);
+                    node.parent.key.add(mid);
+                    Collections.sort(node.parent.key);
+                    node.key.remove(1);
+
+                    node.parent.pointer.add(node.parent.pointer.get(1));
+                    node.parent.pointer.set(0, new Node(node.key.get(0)));
+                    node.parent.pointer.set(1, new Node(node.key.get(1)));
+
+                    node.parent.pointer.get(0).parent = node.parent;
+                    node.parent.pointer.get(1).parent = node.parent;
+                    node.parent.pointer.get(2).parent = node.parent;
                 }
             }
         }
@@ -102,11 +151,21 @@ public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
         Node root = new Node();
         root.isRoot = true;
-        root.insert(21);
-        root.insert(30);
-        root.insert(1);
-        root.insert(2);
+        root.insert(root, 30);
+        root.insert(root, 40);
+        root.insert(root, 10);
+        root.insert(root, 15);
+        root.insert(root, 35);
+        root.insert(root, 20);
+        root.insert(root, 5);
+        root.insert(root, 25);
         Node.myorder(root);
-        
+        Node.print(root);
+        System.out.println();
+        Node.print(root.pointer.get(0));
+        System.out.println();
+        Node.print(root.pointer.get(1));
+        System.out.println();
+        Node.print(root.pointer.get(2));
     }
 }
