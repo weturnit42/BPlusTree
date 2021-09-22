@@ -4,6 +4,86 @@ import java.util.LinkedList;
 
 class Tree{
     Node root;
+
+    public void print(Node node) {
+        for (int i = 0; i < node.key.size(); i++)
+            System.out.print(node.key.get(i) + " ");
+    }
+
+    public void preorder(Node node) {
+        if (node == null)
+            return;
+        this.print(node);
+        for (int i = 0; i < node.pointer.size(); i++)
+            preorder(node.pointer.get(i));
+    }
+    public void postorder(Node node) {
+        if (node == null)
+            return;
+        for (int i = 0; i < node.pointer.size(); i++)
+            postorder(node.pointer.get(i));
+        this.print(node);
+    }
+    public void myorder(Node node) {
+        LinkedList<Node> queue = new LinkedList<Node>();
+        queue.add(node);
+        Node temp;
+        while (queue.size() != 0) {
+            temp = queue.poll();
+            this.print(temp);
+            for (int i = 0; i < temp.pointer.size(); i++){
+                if(temp.pointer.get(i) != null)
+                    queue.add(temp.pointer.get(i));
+            }
+        }
+        System.out.println();
+    }
+
+    public void insert(Node node, int val){
+        node = node.findPlace(val);
+        if(node.key.size() <= 3) {
+            node.key.add(val);
+            node.pointer.add(null);
+            Collections.sort(node.key);
+
+            if(node.key.size() == 3){
+
+                if(node.isRoot == true){
+                    int mid = node.key.get(1);
+                    Node left = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1));
+                    Node right = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3));
+                    
+                    node.key.clear();
+                    node.pointer.clear();
+                    
+                    node.key.add(mid);
+                    node.pointer.add(left);
+                    node.pointer.add(right);
+
+                    left.parent = node;
+                    right.parent = node;
+                    
+                }
+                else if(node.parent.key.size() == 1){
+                    int mid = node.key.get(1);
+                    node.parent.key.add(mid);
+                    Collections.sort(node.parent.key);
+                    node.key.remove(1);
+
+                    node.parent.pointer.add(node.parent.pointer.get(1));
+                    node.parent.pointer.set(0, new Node(node.key.get(0)));
+                    node.parent.pointer.set(1, new Node(node.key.get(1)));
+
+                    node.parent.pointer.get(0).parent = node.parent;
+                    node.parent.pointer.get(1).parent = node.parent;
+                    node.parent.pointer.get(2).parent = node.parent;
+                }
+                else if(node.parent.key.size() == 2){
+                    System.out.println("hey");
+                }
+            }
+        }
+    }
 }
 
 class Node {
@@ -68,104 +148,33 @@ class Node {
 
         return this;
     }
-
-    public void insert(Node node, int val){
-        node = node.findPlace(val);
-        if(node.key.size() <= 3) {
-            node.key.add(val);
-            node.pointer.add(null);
-            Collections.sort(node.key);
-
-            if(node.key.size() == 3){
-
-                if(node.isRoot == true){
-                    int mid = node.key.get(1);
-                    Node left = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1));
-                    Node right = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3));
-                    
-                    node.key.clear();
-                    node.pointer.clear();
-                    
-                    node.key.add(mid);
-                    node.pointer.add(left);
-                    node.pointer.add(right);
-
-                    left.parent = node;
-                    right.parent = node;
-                    
-                }
-                else{
-                    int mid = node.key.get(1);
-                    node.parent.key.add(mid);
-                    Collections.sort(node.parent.key);
-                    node.key.remove(1);
-
-                    node.parent.pointer.add(node.parent.pointer.get(1));
-                    node.parent.pointer.set(0, new Node(node.key.get(0)));
-                    node.parent.pointer.set(1, new Node(node.key.get(1)));
-
-                    node.parent.pointer.get(0).parent = node.parent;
-                    node.parent.pointer.get(1).parent = node.parent;
-                    node.parent.pointer.get(2).parent = node.parent;
-                }
-            }
-        }
-    }
-
-    public static void print(Node node) {
-        for (int i = 0; i < node.key.size(); i++)
-            System.out.print(node.key.get(i) + " ");
-    }
-
-    public static void preorder(Node node) {
-        if (node == null)
-            return;
-        Node.print(node);
-        for (int i = 0; i < node.pointer.size(); i++)
-            preorder(node.pointer.get(i));
-    }
-    public static void postorder(Node node) {
-        if (node == null)
-            return;
-        for (int i = 0; i < node.pointer.size(); i++)
-            postorder(node.pointer.get(i));
-        Node.print(node);
-    }
-    public static void myorder(Node node) {
-        LinkedList<Node> queue = new LinkedList<Node>();
-        queue.add(node);
-        Node temp;
-        while (queue.size() != 0) {
-            temp = queue.poll();
-            Node.print(temp);
-            for (int i = 0; i < temp.pointer.size(); i++){
-                if(temp.pointer.get(i) != null)
-                    queue.add(temp.pointer.get(i));
-            }
-        }
-        System.out.println();
-    }
 }
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
+        Tree tree = new Tree();
         Node root = new Node();
         root.isRoot = true;
-        root.insert(root, 30);
-        root.insert(root, 40);
-        root.insert(root, 10);
-        root.insert(root, 15);
-        root.insert(root, 35);
-        root.insert(root, 20);
-        root.insert(root, 5);
-        root.insert(root, 25);
-        Node.myorder(root);
-        Node.print(root);
+        tree.root = root;
+
+        tree.insert(root, 30);
+        tree.insert(root, 40);
+        tree.insert(root, 10);
+        tree.insert(root, 15);
+        tree.insert(root, 35);
+        tree.insert(root, 20);
+        tree.insert(root, 5);
+        tree.insert(root, 25);
+
+        tree.myorder(root);
+        tree.print(root);
         System.out.println();
-        Node.print(root.pointer.get(0));
+        tree.print(root.pointer.get(0));
         System.out.println();
-        Node.print(root.pointer.get(1));
+        tree.print(root.pointer.get(1));
         System.out.println();
-        Node.print(root.pointer.get(2));
+        tree.print(root.pointer.get(2));
+        System.out.println();
+
     }
 }
