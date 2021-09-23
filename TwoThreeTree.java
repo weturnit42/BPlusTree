@@ -44,6 +44,7 @@ class Tree {
     }
 
     public void insert(Node node, int val, boolean recursive_up) {
+        System.out.println("Inserting " + val + ", " + recursive_up);
         if(node.key.size() == 0) {
             node.key.add(val);
             node.pointer.add(null);
@@ -81,32 +82,42 @@ class Tree {
     
                         } else {
                             System.out.println("insert : " + val + ", node.parent.key.size() : " + node.parent.key.size());
+                            System.out.print("Node.parent : ");
+                            this.print(node.parent);
+                            System.out.println();
                             if (node.parent.key.size() == 1) {
                                 int mid = node.key.get(1);
-                                node.parent.key.add(mid);
-                                Collections.sort(node.parent.key);
+                                System.out.println("mid1 : " + mid);
+                                System.out.println("val1 : " + val);
                                 node.key.remove(1);
-    
-                                node.parent.pointer.add(node.parent.pointer.get(1));
-                                node.parent.pointer.set(0, new Node(node.key.get(0)));
-                                node.parent.pointer.set(1, new Node(node.key.get(1)));
-    
+
+                                Node child1 = new Node(node.key.get(0)); //여기 말하는 거
+                                Node child2 = new Node(node.key.get(1));
+                                Node child3 = node.parent.pointer.get(1);
+                                
+                                node.parent.pointer.set(0, child1);
+                                node.parent.pointer.set(1, child2);
+                                node.parent.pointer.add(child3);
+
                                 node.parent.pointer.get(0).parent = node.parent;
                                 node.parent.pointer.get(1).parent = node.parent;
                                 node.parent.pointer.get(2).parent = node.parent;
+
+                                insert(node.parent, mid, true);
+                                Collections.sort(node.parent.key);
                             } else if (node.parent.key.size() == 2) {
                                 int mid = node.key.get(1);
-                                System.out.println("mid : " + mid);
-                                System.out.println("val : " + val);
+                                System.out.println("mid2 : " + mid);
+                                System.out.println("val2 : " + val);
                                 Node child1 = new Node(node.key.get(0)); //위에 저기처럼 child 넣고 시작해보자. 20210923 수정부분
                                 Node child2 = new Node(node.key.get(2));
                                 Node child3 = node.parent.pointer.get(1);
                                 Node child4 = node.parent.pointer.get(2);
 
-                                node.parent.pointer.add(child4);
                                 node.parent.pointer.set(0, child1);
                                 node.parent.pointer.set(1, child2);
                                 node.parent.pointer.set(2, child3);
+                                node.parent.pointer.set(3, child4);
 
                                 node.parent.pointer.get(0).parent = node.parent;
                                 node.parent.pointer.get(1).parent = node.parent;
@@ -128,6 +139,7 @@ class Tree {
                 insert(node.pointer.get(1), val, false);
         }
         else if (node.key.size() == 2) {
+            System.out.println("node.key.size() : " + node.key.size());
             if(node.pointer.get(0) == null || recursive_up == true){
                 System.out.println("found where to insert " + val);
                 this.print(node);
@@ -158,33 +170,43 @@ class Tree {
     
                         } else {
                             System.out.println("insert : " + val + ", node.parent.key.size() : " + node.parent.key.size());
+                            System.out.print("Node.parent : ");
+                            this.print(node.parent);
+                            System.out.println();
                             if (node.parent.key.size() == 1) {
                                 int mid = node.key.get(1);
-                                node.parent.key.add(mid);
-                                Collections.sort(node.parent.key);
+                                System.out.println("mid3 : " + mid);
+                                System.out.println("val3 : " + val);
                                 node.key.remove(1);
     
-                                node.parent.pointer.add(node.parent.pointer.get(1)); //여기 말하는 거
-                                node.parent.pointer.set(0, new Node(node.key.get(0)));
-                                node.parent.pointer.set(1, new Node(node.key.get(1)));
+                                Node child1 = new Node(node.key.get(0)); //여기 말하는 거
+                                Node child2 = new Node(node.key.get(1));
+                                Node child3 = node.parent.pointer.get(1);
+
+                                node.parent.pointer.set(0, child1);
+                                node.parent.pointer.set(1, child2);
+                                node.parent.pointer.add(child3);
     
                                 node.parent.pointer.get(0).parent = node.parent;
                                 node.parent.pointer.get(1).parent = node.parent;
                                 node.parent.pointer.get(2).parent = node.parent;
+
+                                insert(node.parent, mid, true);
+                                Collections.sort(node.parent.key);
                             } else if (node.parent.key.size() == 2) {
                                 int mid = node.key.get(1);
-                                System.out.println("mid : " + mid);
-                                System.out.println("val : " + val);
+                                System.out.println("mid4 : " + mid);
+                                System.out.println("val4 : " + val);
                                 
                                 Node child1 = new Node(node.key.get(0)); //위에 저기처럼 child 넣고 시작해보자. 20210923 수정부분
                                 Node child2 = new Node(node.key.get(2));
                                 Node child3 = node.parent.pointer.get(1);
                                 Node child4 = node.parent.pointer.get(2);
 
-                                node.parent.pointer.add(child4);
                                 node.parent.pointer.set(0, child1);
                                 node.parent.pointer.set(1, child2);
                                 node.parent.pointer.set(2, child3);
+                                node.parent.pointer.set(3, child4);
 
                                 node.parent.pointer.get(0).parent = node.parent;
                                 node.parent.pointer.get(1).parent = node.parent;
@@ -295,6 +317,7 @@ public class TwoThreeTree {
         tree.insert(root, 13, false);
         tree.insert(root, 3, false);
 
+        System.out.println("--------------------------------");
         tree.myorder(root);
         tree.print(root);
         System.out.println();
@@ -302,9 +325,11 @@ public class TwoThreeTree {
         System.out.println();
         tree.print(root.pointer.get(1));
         System.out.println();
-        tree.print(root.pointer.get(0).pointer.get(0));
+        tree.print(root.pointer.get(2));
         System.out.println();
-        tree.print(root.pointer.get(0).pointer.get(1));
+        tree.print(root.pointer.get(2).pointer.get(0));
+        System.out.println();
+        tree.print(root.pointer.get(2).pointer.get(1));
         System.out.println();
         tree.print(root.pointer.get(1).pointer.get(0));
         System.out.println();
