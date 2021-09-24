@@ -188,7 +188,13 @@ class Tree {
     }
     
     public void delete(Node node, int val, boolean recursive_up){
-        
+        if(node.key.size() == 2){
+            if(node.pointer.get(0) == null)
+                node.key.remove(Integer.valueOf(val));
+        }
+        else if (node.key.size() == 1){
+
+        }
     }
 }
 
@@ -269,39 +275,12 @@ public class TwoThreeTree {
 
         tree.insert(root, 30, false);
         tree.insert(root, 40, false);
-        tree.insert(root, 10, false);
-        tree.insert(root, 15, false);
-        tree.insert(root, 35, false);
-        tree.insert(root, 20, false);
-        tree.insert(root, 5, false);
-        tree.insert(root, 25, false);
-        tree.insert(root, 23, false);
-        tree.insert(root, 1, false);
-        tree.insert(root, 22, false);
-        tree.insert(root, 2, false);
-        tree.insert(root, 41, false);
-        tree.insert(root, 45, false);
-        tree.insert(root, 49, false);
-        tree.insert(root, 21, false);
-        tree.insert(root, 3, false);
+
+        tree.delete(root, 30, false);
 
         System.out.println("--------------------------------");
         tree.myorder(root);
         tree.print(root);
-        System.out.println();
-        tree.print(root.pointer.get(0));
-        System.out.println();
-        tree.print(root.pointer.get(1));
-        System.out.println();
-        tree.print(root.pointer.get(2));
-        System.out.println();
-        tree.print(root.pointer.get(0).pointer.get(0));
-        System.out.println();
-        tree.print(root.pointer.get(0).pointer.get(1));
-        System.out.println();
-        tree.print(root.pointer.get(2).pointer.get(0));
-        System.out.println();
-        tree.print(root.pointer.get(2).pointer.get(1));
         System.out.println();
     }
 }
