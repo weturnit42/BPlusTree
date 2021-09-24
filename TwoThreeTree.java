@@ -50,7 +50,9 @@ class Tree {
             node.pointer.add(null);
         }
         else if (node.key.size() == 1) {
-            System.out.println("node.key.size() : " + node.key.size());
+            System.out.print("going down to ");
+            this.print(node);
+            System.out.println();
 
             if(node.pointer.get(0) == null || recursive_up == true){
                 System.out.println("found where to insert " + val);
@@ -63,7 +65,7 @@ class Tree {
     
                     if (node.key.size() == 3) {
                         if (node.parent == null) {
-                            System.out.println("I'm root!");
+                            System.out.println("I'm the root1!");
                             this.print(root);
                             System.out.println();
                             int mid = node.key.get(1);
@@ -91,9 +93,19 @@ class Tree {
                                 System.out.println("val1 : " + val);
                                 node.key.remove(1);
 
-                                Node child1 = new Node(node.key.get(0)); //여기 말하는 거
-                                Node child2 = new Node(node.key.get(1));
-                                Node child3 = node.parent.pointer.get(1);
+                                Node child1 = null, child2 = null, child3 = null;
+                                if(mid > val) { //왜 나누는 거?
+                                    child1 = new Node(node.key.get(0)); //여기 말하는 거
+                                    // System.out.println("node.key.get(0) : " + node.key.get(0));
+                                    // System.out.println("node.key.get(1) : " + node.key.get(1));
+                                    child2 = new Node(node.key.get(1));
+                                    child3 = node.parent.pointer.get(1);
+                                }
+                                else if(mid < val){
+                                    child1 = node.parent.pointer.get(1);
+                                    child2 = new Node(node.key.get(0));
+                                    child3 = new Node(node.key.get(1));
+                                }
                                 
                                 node.parent.pointer.set(0, child1);
                                 node.parent.pointer.set(1, child2);
@@ -139,7 +151,10 @@ class Tree {
                 insert(node.pointer.get(1), val, false);
         }
         else if (node.key.size() == 2) {
-            System.out.println("node.key.size() : " + node.key.size());
+            System.out.print("going down to ");
+            this.print(node);
+            System.out.println();
+            
             if(node.pointer.get(0) == null || recursive_up == true){
                 System.out.println("found where to insert " + val);
                 this.print(node);
@@ -151,7 +166,7 @@ class Tree {
     
                     if (node.key.size() == 3) {
                         if (node.parent == null) {
-                            System.out.println("I'm root!");
+                            System.out.println("I'm the root3!");
                             this.print(root);
                             System.out.println();
                             int mid = node.key.get(1);
@@ -178,10 +193,20 @@ class Tree {
                                 System.out.println("mid3 : " + mid);
                                 System.out.println("val3 : " + val);
                                 node.key.remove(1);
-    
-                                Node child1 = new Node(node.key.get(0)); //여기 말하는 거
-                                Node child2 = new Node(node.key.get(1));
-                                Node child3 = node.parent.pointer.get(1);
+                                
+                                Node child1 = null, child2 = null, child3 = null;
+                                if(mid > val) { //왜 나누는 거?
+                                    child1 = new Node(node.key.get(0)); //여기 말하는 거
+                                    // System.out.println("node.key.get(0) : " + node.key.get(0));
+                                    // System.out.println("node.key.get(1) : " + node.key.get(1));
+                                    child2 = new Node(node.key.get(1));
+                                    child3 = node.parent.pointer.get(1);
+                                }
+                                else if(mid < val){
+                                    child1 = node.parent.pointer.get(1);
+                                    child2 = new Node(node.key.get(0));
+                                    child3 = new Node(node.key.get(1));
+                                }
 
                                 node.parent.pointer.set(0, child1);
                                 node.parent.pointer.set(1, child2);
@@ -263,6 +288,10 @@ class Node {
         this.pointer.add(left);
         this.pointer.add(right);
         isRoot = false;
+        if(left != null)
+            left.parent = this;
+        if(right != null)
+            right.parent = this;
     }
 
     public Node findPlace(int val) {
@@ -313,9 +342,6 @@ public class TwoThreeTree {
         tree.insert(root, 5, false);
         tree.insert(root, 25, false);
         tree.insert(root, 1, false);
-        tree.insert(root, 2, false);
-        tree.insert(root, 13, false);
-        tree.insert(root, 3, false);
 
         System.out.println("--------------------------------");
         tree.myorder(root);
@@ -325,15 +351,11 @@ public class TwoThreeTree {
         System.out.println();
         tree.print(root.pointer.get(1));
         System.out.println();
-        tree.print(root.pointer.get(2));
+        tree.print(root.pointer.get(0).pointer.get(0));
         System.out.println();
-        tree.print(root.pointer.get(2).pointer.get(0));
+        tree.print(root.pointer.get(0).pointer.get(1));
         System.out.println();
-        tree.print(root.pointer.get(2).pointer.get(1));
-        System.out.println();
-        tree.print(root.pointer.get(1).pointer.get(0));
-        System.out.println();
-        tree.print(root.pointer.get(1).pointer.get(1));
-        System.out.println();
+        tree.print(root.pointer.get(1).pointer.get(2));
+
     }
 }
