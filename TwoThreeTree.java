@@ -45,12 +45,12 @@ class Tree {
 
     public void insert(Node node, int val, boolean recursive_up) {
         System.out.println("Inserting " + val + ", recursive_up : " + recursive_up);
-        if(node.key.size() == 0) {
+        if(node.key.size() == 0) { //시작인 경우
             node.key.add(val);
             node.pointer.add(null);
         }
         else {
-            System.out.print("going down to ");
+            System.out.print("going down to "); //이미 root가 있는 경우
             this.print(node);
             System.out.println();
 
@@ -189,11 +189,34 @@ class Tree {
     
     public void delete(Node node, int val, boolean recursive_up){
         if(node.key.size() == 2){
-            if(node.pointer.get(0) == null)
-                node.key.remove(Integer.valueOf(val));
+            if (val < node.key.get(0))
+                delete(node.pointer.get(0), val, false);
+            else if (val > node.key.get(0) && val < node.key.get(1))
+                delete(node.pointer.get(1), val, false);
+            else if (val > node.key.get(1))
+                delete(node.pointer.get(2), val, false);
+            else{
+                System.out.print("Found " + val + " in ");
+                this.print(node);
+                System.out.println();
+
+                if(node.pointer.get(0) == null)
+                    node.key.remove(Integer.valueOf(val));
+                else{
+                    
+                }
+            }
         }
         else if (node.key.size() == 1){
-
+            if (val < node.key.get(0))
+                delete(node.pointer.get(0), val, false);
+            else if (val > node.key.get(0))
+                delete(node.pointer.get(1), val, false);
+            else{
+                System.out.print("Found " + val + " in ");
+                this.print(node);
+                System.out.println();
+            }
         }
     }
 }
@@ -275,8 +298,14 @@ public class TwoThreeTree {
 
         tree.insert(root, 30, false);
         tree.insert(root, 40, false);
+        tree.insert(root, 10, false);
+        tree.insert(root, 15, false);
+        tree.insert(root, 35, false);
+        tree.insert(root, 20, false);
+        tree.insert(root, 5, false);
+        tree.insert(root, 25, false);
 
-        tree.delete(root, 30, false);
+        tree.delete(root, 10, false);
 
         System.out.println("--------------------------------");
         tree.myorder(root);
