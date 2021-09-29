@@ -200,10 +200,27 @@ class Tree {
                 this.print(node);
                 System.out.println();
 
-                if(node.pointer.get(0) == null)
+                if(node.pointer.get(0) == null) // 노드가 leaf이면서 2-node인 경우
                     node.key.remove(Integer.valueOf(val));
                 else{
-                    
+                    if(node.pointer.get(node.key.indexOf(val)).key.size() == 2){ //노드 기준 왼쪽이 2-node인 경우
+                        int max = node.pointer.get(node.key.indexOf(val)).key.get(1); //val보다 작은 것 중에서 max
+                        node.pointer.get(node.key.indexOf(val)).key.remove(Integer.valueOf(max));
+                        node.key.remove(Integer.valueOf(val));
+                        node.key.add(max);
+                        Collections.sort(node.key);
+
+                    }
+                    else if(node.pointer.get(node.key.indexOf(val)+1).key.size() == 2){ //노드 기준 오른쪽이 2-node인 경우
+                        int min = node.pointer.get(node.key.indexOf(val)+1).key.get(0); //val보다 큰 것 중에서 min
+                        node.pointer.get(node.key.indexOf(val)+1).key.remove(Integer.valueOf(min));
+                        node.key.remove(Integer.valueOf(val));
+                        node.key.add(min);
+                        Collections.sort(node.key);
+                    }
+                    else{ //어느 자식도 2-node가 아닌 경우
+
+                    }
                 }
             }
         }
@@ -305,7 +322,9 @@ public class TwoThreeTree {
         tree.insert(root, 5, false);
         tree.insert(root, 25, false);
 
+        tree.delete(root, 15, false);
         tree.delete(root, 10, false);
+        tree.delete(root, 30, false);
 
         System.out.println("--------------------------------");
         tree.myorder(root);
