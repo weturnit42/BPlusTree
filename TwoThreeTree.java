@@ -43,6 +43,37 @@ class Tree {
         System.out.println();
     }
 
+    public Node find(Node node, int val){
+        if (node.key.contains(val))
+            return node;
+
+        else if (node.key.size() == 1) {
+            if (node.pointer.get(0) == null) {
+                return node;
+            }
+
+            if (val < node.key.get(0))
+                return node.pointer.get(0).findPlace(val);
+            else if (val > node.key.get(0))
+                return node.pointer.get(1).findPlace(val);
+        }
+
+        else if (node.key.size() == 2) {
+            if (node.pointer.get(0) == null) {
+                return node;
+            }
+
+            if (val < node.key.get(0))
+                return node.pointer.get(0).findPlace(val);
+            else if (val > node.key.get(0) && val < node.key.get(1))
+                return node.pointer.get(1).findPlace(val);
+            else if (val > node.key.get(1))
+                return node.pointer.get(2).findPlace(val);
+        }
+
+        return node;
+    }
+
     public void insert(Node node, int val, boolean recursive_up) {
         System.out.println("Inserting " + val + ", recursive_up : " + recursive_up);
         if(node.key.size() == 0) { //시작인 경우
@@ -187,7 +218,7 @@ class Tree {
         }
     }
     
-    public void delete(Node node, int val, boolean recursive_up){
+    public void delete(Node node, int val, boolean recursive_down){
         if(node.key.size() == 2){
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
@@ -196,43 +227,98 @@ class Tree {
             else if (val > node.key.get(1))
                 delete(node.pointer.get(2), val, false);
             else{
-                System.out.print("Found " + val + " in ");
-                this.print(node);
-                System.out.println();
-
-                if(node.pointer.get(0) == null) // 노드가 leaf이면서 2-node인 경우
+                if(node.pointer.get(0) == null){
                     node.key.remove(Integer.valueOf(val));
-                else{
-                    if(node.pointer.get(node.key.indexOf(val)).key.size() == 2){ //노드 기준 왼쪽이 2-node인 경우
-                        int max = node.pointer.get(node.key.indexOf(val)).key.get(1); //val보다 작은 것 중에서 max
-                        node.pointer.get(node.key.indexOf(val)).key.remove(Integer.valueOf(max));
-                        node.key.remove(Integer.valueOf(val));
-                        node.key.add(max);
-                        Collections.sort(node.key);
-
-                    }
-                    else if(node.pointer.get(node.key.indexOf(val)+1).key.size() == 2){ //노드 기준 오른쪽이 2-node인 경우
-                        int min = node.pointer.get(node.key.indexOf(val)+1).key.get(0); //val보다 큰 것 중에서 min
-                        node.pointer.get(node.key.indexOf(val)+1).key.remove(Integer.valueOf(min));
-                        node.key.remove(Integer.valueOf(val));
-                        node.key.add(min);
-                        Collections.sort(node.key);
-                    }
-                    else{ //어느 자식도 2-node가 아닌 경우
-
-                    }
+                }
+                else{ //사실 좌우 노드가 82-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
+                    //if()
                 }
             }
         }
-        else if (node.key.size() == 1){
-            if (val < node.key.get(0))
-                delete(node.pointer.get(0), val, false);
-            else if (val > node.key.get(0))
-                delete(node.pointer.get(1), val, false);
+    }
+
+    public int findBiggestSmallNode(Node node, int val, boolean recursive_down){
+        System.out.println(val);
+        if(val == node.key.get(0)){
+            System.out.println("type 1");
+            if(recursive_down == false) {
+                
+                if(node.pointer.get(0) == null)
+                    return -1;
+
+                else if(node.pointer.get(0).pointer.get(0) == null)
+                    return node.pointer.get(0).key.get(node.pointer.get(0).key.size()-1);
+
+                else
+                    return findBiggestSmallNode(node.pointer.get(0), node.pointer.get(0).key.get(node.pointer.get(0).key.size()-1), true);
+            }
             else{
-                System.out.print("Found " + val + " in ");
-                this.print(node);
-                System.out.println();
+                if(node.pointer.get(0) == null)
+                    return node.key.get(node.key.size()-1);
+                else
+                    return findBiggestSmallNode(node.pointer.get(1), node.pointer.get(1).key.get(node.pointer.get(1).key.size()-1), true);
+            }
+        }
+        else{
+            System.out.println("type 2");
+            if(recursive_down == false) {
+                if(node.pointer.get(1) == null)
+                    return -1;
+
+                else if(node.pointer.get(1).pointer.get(0) == null)
+                    return node.pointer.get(1).key.get(node.pointer.get(1).key.size()-1);
+
+                else
+                    return findBiggestSmallNode(node.pointer.get(1), node.pointer.get(1).key.get(node.pointer.get(1).key.size()-1), true);
+            }
+            else{
+                System.out.println("type 2-2");
+                if(node.pointer.get(0) == null)
+                    return node.key.get(node.key.size()-1);
+                else{
+                    System.out.println("type 2-2-2");
+                    return findBiggestSmallNode(node.pointer.get(2), node.pointer.get(2).key.get(node.pointer.get(2).key.size()-1), true);
+                }
+            }
+        }
+    }
+
+    public int findSmallestBigNode(Node node, int val, boolean recursive_down){
+        //System.out.println(val);
+        if(val == node.key.get(0)){
+            if(recursive_down == false) {
+                if(node.pointer.get(1) == null)
+                    return -1;
+
+                else if(node.pointer.get(1).pointer.get(1) == null)
+                    return node.pointer.get(1).key.get(0);
+
+                else
+                    return findSmallestBigNode(node.pointer.get(1), node.pointer.get(1).key.get(0), true);
+            }
+            else{
+                if(node.pointer.get(0) == null)
+                    return node.key.get(0);
+                else
+                    return findSmallestBigNode(node.pointer.get(0), node.pointer.get(0).key.get(0), true);
+            }
+        }
+        else{
+            if(recursive_down == false) {
+                if(node.pointer.get(0) == null)
+                    return -1;
+
+                else if(node.pointer.get(2).pointer.get(0) == null)
+                    return node.pointer.get(2).key.get(0);
+
+                else
+                    return findSmallestBigNode(node.pointer.get(2), node.pointer.get(2).key.get(0), true);
+            }
+            else{
+                if(node.pointer.get(0) == null)
+                    return node.key.get(0);
+                else
+                    return findSmallestBigNode(node.pointer.get(0), node.pointer.get(0).key.get(0), true);
             }
         }
     }
@@ -321,14 +407,26 @@ public class TwoThreeTree {
         tree.insert(root, 20, false);
         tree.insert(root, 5, false);
         tree.insert(root, 25, false);
-
-        tree.delete(root, 15, false);
-        tree.delete(root, 10, false);
-        tree.delete(root, 30, false);
-
+        tree.insert(root, 1, false);
+        tree.insert(root, 2, false);
+        tree.insert(root, 3, false);
+        tree.insert(root, 11, false);
+        tree.insert(root, 12, false);
+        tree.insert(root, 4, false);
+        tree.insert(root, 5, false);
+        tree.insert(root, 6, false);
+        tree.insert(root, 7, false);
+        tree.insert(root, 8, false);
+        tree.insert(root, 26, false);
+        tree.insert(root, 27, false);
+        tree.insert(root, 28, false);
+        
         System.out.println("--------------------------------");
         tree.myorder(root);
         tree.print(root);
         System.out.println();
+
+        System.out.println(tree.findBiggestSmallNode(root.pointer.get(1).pointer.get(1), 30, false));
+        System.out.println(tree.findSmallestBigNode(root.pointer.get(1).pointer.get(1), 30, false));
     }
 }
