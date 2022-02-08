@@ -53,9 +53,9 @@ class Tree {
             }
 
             if (val < node.key.get(0))
-                return node.pointer.get(0).findPlace(val);
+                return find(node.pointer.get(0), val);
             else if (val > node.key.get(0))
-                return node.pointer.get(1).findPlace(val);
+                return find(node.pointer.get(1), val);
         }
 
         else if (node.key.size() == 2) {
@@ -64,14 +64,14 @@ class Tree {
             }
 
             if (val < node.key.get(0))
-                return node.pointer.get(0).findPlace(val);
+                return find(node.pointer.get(0), val);
             else if (val > node.key.get(0) && val < node.key.get(1))
-                return node.pointer.get(1).findPlace(val);
+                return find(node.pointer.get(1), val);
             else if (val > node.key.get(1))
-                return node.pointer.get(2).findPlace(val);
+                return find(node.pointer.get(2), val);
         }
 
-        return node;
+        return null;
     }
 
     public void insert(Node node, int val, boolean recursive_up) {
@@ -219,6 +219,10 @@ class Tree {
     }
     
     public void delete(Node node, int val, boolean recursive_down){
+        print(node);
+        System.out.println(", size : " + node.key.size());
+        System.out.println();
+        
         if(node.key.size() == 2){
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
@@ -230,17 +234,86 @@ class Tree {
                 if(node.pointer.get(0) == null){
                     node.key.remove(Integer.valueOf(val));
                 }
-                else{ //사실 좌우 노드가 82-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
-                    //if()
+                else{ //사실 좌우 노드가 2-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
+                    if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
+                        print(find(node, findBiggestSmallNode(node, val, false)));
+                        int temp = findBiggestSmallNode(node, val, false);
+                        System.out.println("temp : " + temp);
+                        System.out.println();
+                        node.key.remove(Integer.valueOf(val));
+                        find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.add(temp);
+                        Collections.sort(node.key);
+                    }
+
+                    else if(find(node, findSmallestBigNode(node, val, false)).key.size() == 2){
+                        print(find(node, findSmallestBigNode(node, val, false)));
+                        int temp = findSmallestBigNode(node, val, false);
+                        System.out.println("temp : " + temp);
+                        System.out.println();
+                        find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.remove(Integer.valueOf(val));
+                        System.out.print("tempNode : ");
+                        print(find(node, temp));
+                        System.out.println();
+                        node.key.add(temp);
+                        Collections.sort(node.key);
+                    }
+
+                    else{
+
+                    }
+                }
+            }
+        }
+
+        else if(node.key.size() == 1){
+            if (val < node.key.get(0))
+                delete(node.pointer.get(0), val, false);
+            else if (val > node.key.get(0))
+                delete(node.pointer.get(1), val, false);
+            else{
+                if(node.pointer.get(0) == null){
+                    node.key.remove(Integer.valueOf(val));
+                }
+                else{ //사실 좌우 노드가 2-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
+                    if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
+                        print(find(node, findBiggestSmallNode(node, val, false)));
+                        int temp = findBiggestSmallNode(node, val, false);
+                        System.out.println("temp : " + temp);
+                        System.out.println();
+                        node.key.remove(Integer.valueOf(val));
+                        find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.add(temp);
+                        Collections.sort(node.key);
+                    }
+
+                    else if(find(node, findSmallestBigNode(node, val, false)).key.size() == 2){
+                        print(find(node, findSmallestBigNode(node, val, false)));
+                        int temp = findSmallestBigNode(node, val, false);
+                        System.out.println("temp : " + temp);
+                        System.out.println();
+                        find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.remove(Integer.valueOf(val));
+                        System.out.print("tempNode : ");
+                        //print(find(node, temp));
+                        System.out.println();
+                        node.key.add(temp);
+                        Collections.sort(node.key);
+                    }
+
+                    else{
+                        
+                    }
                 }
             }
         }
     }
 
     public int findBiggestSmallNode(Node node, int val, boolean recursive_down){
-        System.out.println(val);
+        //System.out.println(val);
         if(val == node.key.get(0)){
-            System.out.println("type 1");
+            //System.out.println("type 1");
             if(recursive_down == false) {
                 
                 if(node.pointer.get(0) == null)
@@ -260,7 +333,7 @@ class Tree {
             }
         }
         else{
-            System.out.println("type 2");
+            //System.out.println("type 2");
             if(recursive_down == false) {
                 if(node.pointer.get(1) == null)
                     return -1;
@@ -272,11 +345,11 @@ class Tree {
                     return findBiggestSmallNode(node.pointer.get(1), node.pointer.get(1).key.get(node.pointer.get(1).key.size()-1), true);
             }
             else{
-                System.out.println("type 2-2");
+                //System.out.println("type 2-2");
                 if(node.pointer.get(0) == null)
                     return node.key.get(node.key.size()-1);
                 else{
-                    System.out.println("type 2-2-2");
+                    //System.out.println("type 2-2-2");
                     return findBiggestSmallNode(node.pointer.get(2), node.pointer.get(2).key.get(node.pointer.get(2).key.size()-1), true);
                 }
             }
@@ -426,7 +499,8 @@ public class TwoThreeTree {
         tree.print(root);
         System.out.println();
 
-        System.out.println(tree.findBiggestSmallNode(root.pointer.get(1).pointer.get(1), 30, false));
-        System.out.println(tree.findSmallestBigNode(root.pointer.get(1).pointer.get(1), 30, false));
+        tree.delete(root, 30, false);
+        tree.myorder(root);
+        tree.print(root);
     }
 }
