@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.io.*;
+import java.util.*;
 
 class Tree {
     Node root;
@@ -472,35 +474,47 @@ public class TwoThreeTree {
         root.isRoot = true;
         tree.root = root;
 
-        tree.insert(root, 30, false);
-        tree.insert(root, 40, false);
-        tree.insert(root, 10, false);
-        tree.insert(root, 15, false);
-        tree.insert(root, 35, false);
-        tree.insert(root, 20, false);
-        tree.insert(root, 5, false);
-        tree.insert(root, 25, false);
-        tree.insert(root, 1, false);
-        tree.insert(root, 2, false);
-        tree.insert(root, 3, false);
-        tree.insert(root, 11, false);
-        tree.insert(root, 12, false);
-        tree.insert(root, 4, false);
-        tree.insert(root, 5, false);
-        tree.insert(root, 6, false);
-        tree.insert(root, 7, false);
-        tree.insert(root, 8, false);
-        tree.insert(root, 26, false);
-        tree.insert(root, 27, false);
-        tree.insert(root, 28, false);
+        // tree.insert(root, 30, false);
+        // tree.insert(root, 40, false);
+        // tree.insert(root, 10, false);
+        // tree.insert(root, 15, false);
+        // tree.insert(root, 35, false);
+        // tree.insert(root, 20, false);
+        // tree.insert(root, 5, false);
+        // tree.insert(root, 25, false);
+        // tree.insert(root, 1, false);
+        // tree.insert(root, 2, false);
+        // tree.insert(root, 3, false);
+        // tree.insert(root, 11, false);
+        // tree.insert(root, 12, false);
+        // tree.insert(root, 4, false);
+        // tree.insert(root, 5, false);
+        // tree.insert(root, 6, false);
+        // tree.insert(root, 7, false);
+        // tree.insert(root, 8, false);
+        // tree.insert(root, 26, false);
+        // tree.insert(root, 27, false);
+        // tree.insert(root, 28, false);
         
-        System.out.println("--------------------------------");
-        tree.myorder(root);
-        tree.print(root);
-        System.out.println();
+        // System.out.println("--------------------------------");
+        // tree.myorder(root);
+        // tree.print(root);
+        // System.out.println();
 
-        tree.delete(root, 30, false);
-        tree.myorder(root);
-        tree.print(root);
+        // tree.delete(root, 30, false);
+        // tree.myorder(root);
+        // tree.print(root);
+
+        File csv = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\input.csv");
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(csv));
+        for(int i=0;i<1000;i++){
+            String line = "";
+            line = br.readLine();
+            String[] lineArr = line.split("\t");
+            System.out.println(lineArr[1]);
+            tree.insert(root, Integer.parseInt(lineArr[1]), false);
+        }
+        br.close();
     }
 }
