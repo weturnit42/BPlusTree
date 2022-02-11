@@ -270,22 +270,20 @@ class Tree {
         }
 
         else if(node.key.size() == 1){
+            System.out.println("D2");
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
             else if (val > node.key.get(0))
                 delete(node.pointer.get(1), val, false);
             else{
-                if(node.pointer.get(0) == null){
-                    node.key.remove(Integer.valueOf(val));
-                }
-                else{ //사실 좌우 노드가 2-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
+                if(node.pointer.get(0) != null){ //사실 좌우 노드가 2-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
                     if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
                         print(find(node, findBiggestSmallNode(node, val, false)));
                         int temp = findBiggestSmallNode(node, val, false);
                         System.out.println("temp : " + temp);
                         System.out.println();
-                        node.key.remove(Integer.valueOf(val));
                         find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.remove(Integer.valueOf(val));
                         node.key.add(temp);
                         Collections.sort(node.key);
                     }
@@ -305,8 +303,41 @@ class Tree {
                     }
 
                     else{
+                        int idx = (node.parent == null) ? 0 : node.parent.pointer.indexOf(node);
+                        int biggestSmallIdx = find(node, findBiggestSmallNode(node, val, false)).parent.pointer.indexOf(find(node, findBiggestSmallNode(node, val, false)));
+                        int smalllestBigIdx = find(node, findSmallestBigNode(node, val, false)).parent.pointer.indexOf(find(node, findSmallestBigNode(node, val, false)));
+                        print(node);
+                        System.out.println();
+                        System.out.println("node.parent.pointer.indexOf(node) : " + idx);
+                        System.out.println("biggestSmallIdx : " + biggestSmallIdx);
+                        System.out.println("smalllestBigIdx : " + smalllestBigIdx);
+
+                        if(find(node, findBiggestSmallNode(node, val, false)).parent.pointer.get(biggestSmallIdx-1).key.size() == 2){
+                            print(find(node, findBiggestSmallNode(node, val, false)).parent.pointer.get(biggestSmallIdx-1));
+                            System.out.println();
+
+                            int temp = findBiggestSmallNode(node, val, false);
+                            Node tempNode = find(node, findBiggestSmallNode(node, val, false));
+                            // node.key.add(findBiggestSmallNode(node, val, false));
+                            // node.key.remove(Integer.valueOf(val));
+                            // //find(node, findBiggestSmallNode(node, val, false)).key.add();
+                            // //find(node, findBiggestSmallNode(node, val, false)).key.remove(Integer.valueOf(val));
+                            // System.out.println("find(node, findBiggestSmallNode(node, val, false)).parent.key.size() : " + find(node, findBiggestSmallNode(node, val, false)).parent.key.size() ); 
                         
+                            print(tempNode.parent.pointer.get(tempNode.parent.pointer.indexOf(tempNode)-1));
+
+                            node.key.add(temp);
+                            node.key.remove(Integer.valueOf(val));
+                            tempNode.add(tempNode.parent.key.get(tempNode.parent.key.size()-1));
+                            tempNode.remove(Integer.valueOf(temp));
+                            tempNode.parent.key.remove(tempNode.parent.key.get(tempNode.parent.key.size()-1));
+                            tempNode.parent.key.add(tempNode.parent.pointer.get(tempNode.parent.pointer.))
+                        }
                     }
+                }
+
+                else {
+
                 }
             }
         }
@@ -474,27 +505,26 @@ public class TwoThreeTree {
         root.isRoot = true;
         tree.root = root;
 
-        // tree.insert(root, 30, false);
-        // tree.insert(root, 40, false);
-        // tree.insert(root, 10, false);
-        // tree.insert(root, 15, false);
-        // tree.insert(root, 35, false);
-        // tree.insert(root, 20, false);
-        // tree.insert(root, 5, false);
-        // tree.insert(root, 25, false);
-        // tree.insert(root, 1, false);
-        // tree.insert(root, 2, false);
-        // tree.insert(root, 3, false);
-        // tree.insert(root, 11, false);
-        // tree.insert(root, 12, false);
-        // tree.insert(root, 4, false);
-        // tree.insert(root, 5, false);
-        // tree.insert(root, 6, false);
-        // tree.insert(root, 7, false);
-        // tree.insert(root, 8, false);
-        // tree.insert(root, 26, false);
-        // tree.insert(root, 27, false);
-        // tree.insert(root, 28, false);
+        tree.insert(root, 30, false);
+        tree.insert(root, 40, false);
+        tree.insert(root, 10, false);
+        tree.insert(root, 15, false);
+        tree.insert(root, 35, false);
+        tree.insert(root, 20, false);
+        tree.insert(root, 5, false);
+        tree.insert(root, 25, false);
+        tree.insert(root, 1, false);
+        tree.insert(root, 2, false);
+        tree.insert(root, 3, false);
+        tree.insert(root, 11, false);
+        tree.insert(root, 12, false);
+        tree.insert(root, 4, false);
+        tree.insert(root, 6, false);
+        tree.insert(root, 7, false);
+        tree.insert(root, 8, false);
+        tree.insert(root, 26, false);
+        tree.insert(root, 27, false);
+        tree.insert(root, 28, false);
         
         // System.out.println("--------------------------------");
         // tree.myorder(root);
@@ -505,16 +535,23 @@ public class TwoThreeTree {
         // tree.myorder(root);
         // tree.print(root);
 
-        File csv = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\input.csv");
-        BufferedReader br = null;
-        br = new BufferedReader(new FileReader(csv));
-        for(int i=0;i<1000;i++){
-            String line = "";
-            line = br.readLine();
-            String[] lineArr = line.split("\t");
-            System.out.println(lineArr[1]);
-            tree.insert(root, Integer.parseInt(lineArr[1]), false);
-        }
-        br.close();
+
+
+        // File csv = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\input.csv");
+        // BufferedReader br = null;
+        // br = new BufferedReader(new FileReader(csv));
+        // for(int i=0;i<1000;i++){
+        //     String line = "";
+        //     line = br.readLine();
+        //     String[] lineArr = line.split("\t");
+        //     System.out.println(lineArr[1]);
+        //     tree.insert(root, Integer.parseInt(lineArr[1]), false);
+        // }
+        // br.close();
+
+        tree.delete(root, 5, false);
+        tree.delete(root, 15, false);
+        
+        tree.myorder(root);
     }
 }
