@@ -87,7 +87,7 @@ class Tree {
             this.print(node);
             System.out.println();
 
-            if(node.pointer.get(0) == null || recursive_up == true){
+            if(node.pointer.get(0) == null || recursive_up == true){ //leaf에 도달했거나 재귀적으로 반복했을 경우
                 System.out.println("found where to insert " + val);
                 this.print(node);
                 System.out.println();
@@ -96,31 +96,31 @@ class Tree {
                     node.pointer.add(null);
                     Collections.sort(node.key);
     
-                    if (node.key.size() == 3) {
-                        if (node.parent == null) {
+                    if (node.key.size() == 3) { //만약 키가 3개라면 == split이 필요한 경우라면
+                        if (node.parent == null) { //만약 parent가 없을 때 == node가 root일 때
                             System.out.println("I'm the root!");
                             this.print(root);
                             System.out.println();
-                            int mid = node.key.get(1);
-                            Node left = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1));
-                            Node right = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3));
+                            int mid = node.key.get(1); //node를 새롭게 만드는 것이 아닌, 원래의 노드를 parent로 활용한다.
+                            Node left = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1)); //leftChild 생성
+                            Node right = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3)); //rightChild 생성
     
-                            node.key.clear();
+                            node.key.clear(); //node의 key와 pointer 모두 지우고
                             node.pointer.clear();
     
-                            node.key.add(mid);
+                            node.key.add(mid); //키와 parent-child 관계 재생성
                             node.pointer.add(left);
                             node.pointer.add(right);
     
                             left.parent = node;
                             right.parent = node;
     
-                        } else {
+                        } else { //node가 root가 아닐 때
                             System.out.println("insert : " + val + ", node.parent.key.size() : " + node.parent.key.size());
                             System.out.print("Node.parent : ");
                             this.print(node.parent);
                             System.out.println();
-                            if (node.parent.key.size() == 1) {
+                            if (node.parent.key.size() == 1) { //parent size가 1일 때 == 재귀적으로 split이 필요없다.
                                 int mid = node.key.get(1);
                                 System.out.println("mid1 : " + mid);
                                 System.out.println("node.parent.key.get(0) : " + node.parent.key.get(0));
@@ -155,7 +155,7 @@ class Tree {
                                 node.key.remove(1);
                                 insert(node.parent, mid, true);
                                 Collections.sort(node.parent.key);
-                            } else if (node.parent.key.size() == 2) {
+                            } else if (node.parent.key.size() == 2) { //parent size가 2일 때 == 재귀적으로 split이 필요하다.
                                 int mid = node.key.get(1);
                                 System.out.println("mid2 : " + mid);
                                 System.out.println("node.parent.key.get(0) : " + node.parent.key.get(0));
@@ -194,7 +194,7 @@ class Tree {
                                 node.parent.pointer.get(3).parent = node.parent;
 
                                 node.key.remove(1);
-                                insert(node.parent, mid, true);
+                                insert(node.parent, mid, true); //재귀적으로 돌리기. recursive_up을 true로 준다.
                                 Collections.sort(node.parent.key);
                             }
                         }
@@ -500,105 +500,110 @@ class Node {
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
-        // tree.insert(root, 30, false);
-        // tree.insert(root, 40, false);
-        // tree.insert(root, 10, false);
-        // tree.insert(root, 15, false);
-        // tree.insert(root, 35, false);
-        // tree.insert(root, 20, false);
-        // tree.insert(root, 5, false);
-        // tree.insert(root, 25, false);
-        // tree.insert(root, 1, false);
-        // tree.insert(root, 2, false);
-        // tree.insert(root, 3, false);
-        // tree.insert(root, 11, false);
-        // tree.insert(root, 12, false);
-        // tree.insert(root, 4, false);
-        // tree.insert(root, 6, false);
-        // tree.insert(root, 7, false);
-        // tree.insert(root, 8, false);
-        // tree.insert(root, 26, false);
-        // tree.insert(root, 27, false);
-        // tree.insert(root, 28, false);
+        Tree tree = new Tree();
+        Node root = new Node();
+        root.isRoot = true;
+        tree.root = root;
+
+        tree.insert(root, 30, false);
+        tree.insert(root, 40, false);
+        tree.insert(root, 10, false);
+        tree.insert(root, 15, false);
+        tree.insert(root, 35, false);
+        tree.insert(root, 20, false);
+        tree.insert(root, 5, false);
+        tree.insert(root, 25, false);
+        tree.insert(root, 1, false);
+        tree.insert(root, 2, false);
+        tree.insert(root, 3, false);
+        tree.insert(root, 11, false);
+        tree.insert(root, 12, false);
+        tree.insert(root, 4, false);
+        tree.insert(root, 6, false);
+        tree.insert(root, 7, false);
+        tree.insert(root, 8, false);
+        tree.insert(root, 26, false);
+        tree.insert(root, 27, false);
+        tree.insert(root, 28, false);
         
-        // System.out.println("--------------------------------");
-        // tree.myorder(root);
-        // tree.print(root);
-        // System.out.println();
+        System.out.println("--------------------------------");
+        tree.myorder(root);
+        tree.print(root);
+        System.out.println();
 
-        // tree.delete(root, 30, false);
-        // tree.myorder(root);
-        // tree.print(root);
+        tree.delete(root, 30, false);
+        tree.myorder(root);
+        tree.print(root);
 
 
-        while(true){
-            int choice;
-            Scanner sc = new Scanner(System.in);
-            choice = sc.nextInt();
-            int count = 100;
+        // while(true){
+        //     int choice;
+        //     Scanner sc = new Scanner(System.in);
+        //     choice = sc.nextInt();
+        //     int count = 100;
 
-            if(choice == 1){
-                String name;
-                Scanner sc2 = new Scanner(System.in);
-                name = sc2.nextLine();
+        //     if(choice == 1){
+        //         String name;
+        //         Scanner sc2 = new Scanner(System.in);
+        //         name = sc2.nextLine();
 
-                Tree tree = new Tree();
-                Node root = new Node();
-                root.isRoot = true;
-                tree.root = root;
+        //         Tree tree = new Tree();
+        //         Node root = new Node();
+        //         root.isRoot = true;
+        //         tree.root = root;
 
-                File csv = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\" + name);
-                BufferedReader br = null;
-                br = new BufferedReader(new FileReader(csv));
-                for(int i=0;i<count;i++){
-                    String line = "";
-                    line = br.readLine();
-                    String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
-                    tree.insert(root, Integer.parseInt(lineArr[1]), false);
-                }
-                br.close();
+        //         File csv = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\" + name);
+        //         BufferedReader br = null;
+        //         br = new BufferedReader(new FileReader(csv));
+        //         for(int i=0;i<count;i++){
+        //             String line = "";
+        //             line = br.readLine();
+        //             String[] lineArr = line.split("\t");
+        //             System.out.println(lineArr[1]);
+        //             tree.insert(root, Integer.parseInt(lineArr[1]), false);
+        //         }
+        //         br.close();
 
-                br = new BufferedReader(new FileReader(csv));
-                File csv2 = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\output.csv");
-                BufferedWriter bw = null; // 출력 스트림 생성
-                bw = new BufferedWriter(new FileWriter(csv2));
+        //         br = new BufferedReader(new FileReader(csv));
+        //         File csv2 = new File("C:\\Users\\SAMSUNG\\Downloads\\data\\output.csv");
+        //         BufferedWriter bw = null; // 출력 스트림 생성
+        //         bw = new BufferedWriter(new FileWriter(csv2));
 
-                for(int i=0;i<count;i++){
-                    String line = "";
-                    line = br.readLine();
-                    String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
-                    int target = Integer.parseInt(lineArr[1]);
+        //         for(int i=0;i<count;i++){
+        //             String line = "";
+        //             line = br.readLine();
+        //             String[] lineArr = line.split("\t");
+        //             System.out.println(lineArr[1]);
+        //             int target = Integer.parseInt(lineArr[1]);
 
-                    if(tree.find(root, target) != null){
-                        bw.write(Integer.toString(target));
-                        bw.newLine();
-                    }
-                }
-                bw.close();
+        //             if(tree.find(root, target) != null){
+        //                 bw.write(Integer.toString(target));
+        //                 bw.newLine();
+        //             }
+        //         }
+        //         bw.close();
 
-                BufferedReader br3 = new BufferedReader(new FileReader(csv));
-                BufferedReader br4 = new BufferedReader(new FileReader(csv2));
-                boolean check = true;
-                for(int i=0;i<count;i++){
-                    String line1 = "";
-                    line1 = br3.readLine();
-                    String[] lineArr1 = line1.split("\t");
-                    int comp1 = Integer.parseInt(lineArr1[1]);
+        //         BufferedReader br3 = new BufferedReader(new FileReader(csv));
+        //         BufferedReader br4 = new BufferedReader(new FileReader(csv2));
+        //         boolean check = true;
+        //         for(int i=0;i<count;i++){
+        //             String line1 = "";
+        //             line1 = br3.readLine();
+        //             String[] lineArr1 = line1.split("\t");
+        //             int comp1 = Integer.parseInt(lineArr1[1]);
 
-                    String line2 = "";
-                    line2 = br4.readLine();
-                    int comp2 = Integer.parseInt(line2);
+        //             String line2 = "";
+        //             line2 = br4.readLine();
+        //             int comp2 = Integer.parseInt(line2);
 
-                    if(comp1 != comp2)
-                        check = false;
-                }
-                System.out.println(check);
-            }
-            else{
-                break;
-            }
-        }
+        //             if(comp1 != comp2)
+        //                 check = false;
+        //         }
+        //         System.out.println(check);
+        //     }
+        //     else{
+        //         break;
+        //     }
+        // }
     }
 }
