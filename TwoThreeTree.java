@@ -220,6 +220,63 @@ class Tree {
         }
     }
     
+/*    public void delete(Node node, int val, boolean recursieve_down){
+        if(node.key.size() == 2){
+            if (val < node.key.get(0))
+                delete(node.pointer.get(0), val, false);
+            else if (val > node.key.get(0) && val < node.key.get(1))
+                delete(node.pointer.get(1), val, false);
+            else if (val > node.key.get(1))
+                delete(node.pointer.get(2), val, false);
+            else{
+                if(node.pointer.get(0) == null){
+                    node.key.remove(Integer.valueOf(val));
+                }
+                else{
+                    //int keyIndex = node.key.indexOf(Integer.valueOf(val));
+                    if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
+                        print(find(node, findBiggestSmallNode(node, val, false)));
+                        int temp = findBiggestSmallNode(node, val, false);
+                        System.out.println("temp : " + temp);
+                        System.out.println();
+                        node.key.remove(Integer.valueOf(val));
+                        find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.add(temp);
+                        Collections.sort(node.key);
+                    }
+
+                    else if(find(node, findSmallestBigNode(node, val, false)).key.size() == 2){
+                        print(find(node, findSmallestBigNode(node, val, false)));
+                        int temp = findSmallestBigNode(node, val, false);
+                        System.out.println("temp : " + temp);
+                        System.out.println();
+                        find(node, temp).key.remove(Integer.valueOf(temp));
+                        node.key.remove(Integer.valueOf(val));
+                        System.out.print("tempNode : ");
+                        print(find(node, temp));
+                        System.out.println();
+                        node.key.add(temp);
+                        Collections.sort(node.key);
+                    }
+
+                    else{
+
+                    }
+                }
+            }
+        }
+
+        else if(node.key.size() == 1){
+            if (val < node.key.get(0))
+                delete(node.pointer.get(0), val, false);
+            else if (val > node.key.get(0))
+                delete(node.pointer.get(1), val, false);
+            else{
+
+            }
+        }
+    } */
+
     public void delete(Node node, int val, boolean recursive_down){
         print(node);
         System.out.println(", size : " + node.key.size());
@@ -263,7 +320,7 @@ class Tree {
                     }
 
                     else{
-
+                        //TODO
                     }
                 }
             }
@@ -318,26 +375,95 @@ class Tree {
 
                             int temp = findBiggestSmallNode(node, val, false);
                             Node tempNode = find(node, findBiggestSmallNode(node, val, false));
-                            // node.key.add(findBiggestSmallNode(node, val, false));
-                            // node.key.remove(Integer.valueOf(val));
-                            // //find(node, findBiggestSmallNode(node, val, false)).key.add();
-                            // //find(node, findBiggestSmallNode(node, val, false)).key.remove(Integer.valueOf(val));
-                            // System.out.println("find(node, findBiggestSmallNode(node, val, false)).parent.key.size() : " + find(node, findBiggestSmallNode(node, val, false)).parent.key.size() ); 
-                        
+                            
                             print(tempNode.parent.pointer.get(tempNode.parent.pointer.indexOf(tempNode)-1));
+                            System.out.println();
 
                             node.key.add(temp);
                             node.key.remove(Integer.valueOf(val));
-                            //tempNode.add(tempNode.parent.key.get(tempNode.parent.key.size()-1));
-                            //tempNode.remove(Integer.valueOf(temp));
-                            //tempNode.parent.key.remove(tempNode.parent.key.get(tempNode.parent.key.size()-1));
-                            //tempNode.parent.key.add(tempNode.parent.pointer.get(tempNode.parent.pointer))
+                            tempNode.key.add(tempNode.parent.key.get(tempNode.parent.key.size()-1));
+                            tempNode.key.remove(Integer.valueOf(temp));
+                            tempNode.parent.key.add(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.get(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.size()-1));
+                            tempNode.parent.key.remove(tempNode.parent.key.get(tempNode.parent.key.size()-2));
+                            tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.remove(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.size()-1);
+                        
+                            Collections.sort(node.key);
+                            Collections.sort(tempNode.key);
+                            Collections.sort(tempNode.parent.key);
+                            Collections.sort(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key);
+                        }
+
+                        else if(find(node, findSmallestBigNode(node, val, false)).parent.pointer.get(smalllestBigIdx+1).key.size() == 2){
+                            print(find(node, findSmallestBigNode(node, val, false)).parent.pointer.get(smalllestBigIdx+1));
+                            System.out.println();
+
+                            int temp = findSmallestBigNode(node, val, false);
+                            Node tempNode = find(node, findSmallestBigNode(node, val, false));
+                            
+                            print(tempNode.parent.pointer.get(tempNode.parent.pointer.indexOf(tempNode)+1));
+                            System.out.println();
+
+                            node.key.add(temp);
+                            node.key.remove(Integer.valueOf(val));
+                            tempNode.key.add(tempNode.parent.key.get(0));
+                            tempNode.key.remove(Integer.valueOf(temp));
+                            tempNode.parent.key.add(tempNode.parent.pointer.get(1).key.get(0));
+                            tempNode.parent.key.remove(0);
+                            tempNode.parent.pointer.get(1).key.remove(0);
+                        
+                            Collections.sort(node.key);
+                            Collections.sort(tempNode.key);
+                            Collections.sort(tempNode.parent.key);
+                            Collections.sort(tempNode.parent.pointer.get(1).key);
+                        }
+
+                        else{
+                            if(find(node, findBiggestSmallNode(node, val, false)).parent.key == 2){
+                                int temp = findBiggestSmallNode(node, val, false);
+                                Node tempNode = find(node, findBiggestSmallNode(node, val, false));
+
+                                node.key.add(temp);
+                                node.key.remove(Integer.valueOf(val));
+                                tempNode.parent.pointer.get(biggestSmallIdx-1).key.add(Integer.valueOf(temp));
+                                tempNode.parent.pointer.remove(2);
+
+                                Collections.sort(node.key);
+                                Collections.sort(tempNode.parent.pointer.get(biggestSmallIdx-1).key);
+                            }
+
+                            else if(find(node, findSmallestBigNode(node, val, false)).parent.key == 2){
+                                int temp = findSmallestBigNode(node, val, false);
+                                Node tempNode = find(node, findSmallestBigNode(node, val, false));
+
+                                node.key.add(temp);
+                                node.key.remove(Integer.valueOf(val));
+                                tempNode.key.remove(Integer.valueOf(temp));
+                                tempNode.key.add(tempNode.parent.key.get(0));
+                                tempNode.key.add(tempNode.parent.pointer.get(1).key.get(0));
+                                tempNode.parent.key.remove(0);
+
+                                if(tempNode.parent.pointer.get(2).key.get(0) != null)
+                                    tempNode.parent.pointer.get(1).add(tempNode.parent.pointer.get(2).key.get(0));
+                                if(tempNode.parent.pointer.get(2).key.get(1) != null)
+                                    tempNode.parent.pointer.get(1).add(tempNode.parent.pointer.get(2).key.get(1));
+
+                                tempNode.parent.pointer.remove(2);
+
+                                Collections.sort(node.key);
+                                Collections.sort(tempNode.key);
+                                Collections.sort(tempNode.parent.key);
+                                Collections.sort(tempNode.parent.pointer.get(1).key);
+                            }
+
+                            else {
+                                
+                            }
                         }
                     }
                 }
 
                 else {
-
+                    //TODO
                 }
             }
         }
@@ -500,10 +626,10 @@ class Node {
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
-        // Tree tree = new Tree();
-        // Node root = new Node();
-        // root.isRoot = true;
-        // tree.root = root;
+        Tree tree = new Tree();
+        Node root = new Node();
+        root.isRoot = true;
+        tree.root = root;
 
         // tree.insert(root, 30, false);
         // tree.insert(root, 40, false);
@@ -535,76 +661,99 @@ public class TwoThreeTree {
         // tree.myorder(root);
         // tree.print(root);
 
+        tree.insert(root, 5, false);
+        tree.insert(root, 3, false);
+        tree.insert(root, 7, false);
+        tree.insert(root, 2, false);
+        tree.insert(root, 4, false);
+        tree.insert(root, 6, false);
+        tree.insert(root, 8, false);
+        tree.insert(root, 1, false);
+        System.out.println("--------------------------------");
+        tree.myorder(root);
+        tree.print(root);
+        System.out.println();
+        tree.delete(root, 5, false);
+        tree.myorder(root);
+        tree.print(root);
+        tree.insert(root, 9, false);
+        tree.myorder(root);
+        tree.print(root);
+        System.out.println();
+        tree.delete(root, 4, false);
+        tree.myorder(root);
+        tree.print(root);
+        System.out.println();
 
-        while(true){
-            int choice;
-            Scanner sc = new Scanner(System.in);
-            System.out.print("1.insertion 2.deletion. 3.quit : ");
-            choice = sc.nextInt();
-            int count = 1000000;
+        // while(true){
+        //     int choice;
+        //     Scanner sc = new Scanner(System.in);
+        //     System.out.print("1.insertion 2.deletion. 3.quit : ");
+        //     choice = sc.nextInt();
+        //     int count = 1000000;
 
-            if(choice == 1){
-                String name;
-                Scanner sc2 = new Scanner(System.in);
-                name = sc2.nextLine();
+        //     if(choice == 1){
+        //         String name;
+        //         Scanner sc2 = new Scanner(System.in);
+        //         name = sc2.nextLine();
 
-                Tree tree = new Tree();
-                Node root = new Node();
-                root.isRoot = true;
-                tree.root = root;
+        //         Tree tree = new Tree();
+        //         Node root = new Node();
+        //         root.isRoot = true;
+        //         tree.root = root;
 
-                File csv = new File(name);
-                BufferedReader br = null;
-                br = new BufferedReader(new FileReader(csv));
-                for(int i=0;i<count;i++){
-                    String line = "";
-                    line = br.readLine();
-                    String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
-                    tree.insert(root, Integer.parseInt(lineArr[1]), false);
-                }
-                br.close();
+        //         File csv = new File(name);
+        //         BufferedReader br = null;
+        //         br = new BufferedReader(new FileReader(csv));
+        //         for(int i=0;i<count;i++){
+        //             String line = "";
+        //             line = br.readLine();
+        //             String[] lineArr = line.split("\t");
+        //             System.out.println(lineArr[1]);
+        //             tree.insert(root, Integer.parseInt(lineArr[1]), false);
+        //         }
+        //         br.close();
 
-                br = new BufferedReader(new FileReader(csv));
-                File csv2 = new File("output.csv");
-                BufferedWriter bw = null; // 출력 스트림 생성
-                bw = new BufferedWriter(new FileWriter(csv2));
+        //         br = new BufferedReader(new FileReader(csv));
+        //         File csv2 = new File("output.csv");
+        //         BufferedWriter bw = null; // 출력 스트림 생성
+        //         bw = new BufferedWriter(new FileWriter(csv2));
 
-                for(int i=0;i<count;i++){
-                    String line = "";
-                    line = br.readLine();
-                    String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
-                    int target = Integer.parseInt(lineArr[1]);
+        //         for(int i=0;i<count;i++){
+        //             String line = "";
+        //             line = br.readLine();
+        //             String[] lineArr = line.split("\t");
+        //             System.out.println(lineArr[1]);
+        //             int target = Integer.parseInt(lineArr[1]);
 
-                    if(tree.find(root, target) != null){
-                        bw.write(Integer.toString(target));
-                        bw.newLine();
-                    }
-                }
-                bw.close();
+        //             if(tree.find(root, target) != null){
+        //                 bw.write(Integer.toString(target));
+        //                 bw.newLine();
+        //             }
+        //         }
+        //         bw.close();
 
-                BufferedReader br3 = new BufferedReader(new FileReader(csv));
-                BufferedReader br4 = new BufferedReader(new FileReader(csv2));
-                boolean check = true;
-                for(int i=0;i<count;i++){
-                    String line1 = "";
-                    line1 = br3.readLine();
-                    String[] lineArr1 = line1.split("\t");
-                    int comp1 = Integer.parseInt(lineArr1[1]);
+        //         BufferedReader br3 = new BufferedReader(new FileReader(csv));
+        //         BufferedReader br4 = new BufferedReader(new FileReader(csv2));
+        //         boolean check = true;
+        //         for(int i=0;i<count;i++){
+        //             String line1 = "";
+        //             line1 = br3.readLine();
+        //             String[] lineArr1 = line1.split("\t");
+        //             int comp1 = Integer.parseInt(lineArr1[1]);
 
-                    String line2 = "";
-                    line2 = br4.readLine();
-                    int comp2 = Integer.parseInt(line2);
+        //             String line2 = "";
+        //             line2 = br4.readLine();
+        //             int comp2 = Integer.parseInt(line2);
 
-                    if(comp1 != comp2)
-                        check = false;
-                }
-                System.out.println(check);
-            }
-            else{
-                break;
-            }
-        }
+        //             if(comp1 != comp2)
+        //                 check = false;
+        //         }
+        //         System.out.println(check);
+        //     }
+        //     else{
+        //         break;
+        //     }
+        // }
     }
 }
