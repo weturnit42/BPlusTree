@@ -220,254 +220,192 @@ class Tree {
         }
     }
     
-/*    public void delete(Node node, int val, boolean recursieve_down){
-        if(node.key.size() == 2){
-            if (val < node.key.get(0))
-                delete(node.pointer.get(0), val, false);
-            else if (val > node.key.get(0) && val < node.key.get(1))
-                delete(node.pointer.get(1), val, false);
-            else if (val > node.key.get(1))
-                delete(node.pointer.get(2), val, false);
-            else{
-                if(node.pointer.get(0) == null){
+    public void delete(Node node, int val, boolean recursive_up){
+        int idx = (node.parent == null) ? 0 : node.parent.pointer.indexOf(node);
+
+        if(recursive_up == true || node.key.contains(Integer.valueOf(val))){
+            if(node.key.size() == 2){
+                if(node.pointer.get(0) == null){ //node가 2-node면서 leaf인 경우
                     node.key.remove(Integer.valueOf(val));
                 }
                 else{
-                    //int keyIndex = node.key.indexOf(Integer.valueOf(val));
-                    if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
-                        print(find(node, findBiggestSmallNode(node, val, false)));
-                        int temp = findBiggestSmallNode(node, val, false);
-                        System.out.println("temp : " + temp);
-                        System.out.println();
-                        node.key.remove(Integer.valueOf(val));
-                        find(node, temp).key.remove(Integer.valueOf(temp));
-                        node.key.add(temp);
-                        Collections.sort(node.key);
-                    }
+                    
+                }
+            }
 
-                    else if(find(node, findSmallestBigNode(node, val, false)).key.size() == 2){
-                        print(find(node, findSmallestBigNode(node, val, false)));
-                        int temp = findSmallestBigNode(node, val, false);
-                        System.out.println("temp : " + temp);
-                        System.out.println();
-                        find(node, temp).key.remove(Integer.valueOf(temp));
+            else if(node.key.size() == 1){
+                if(node.pointer.get(0) == null){ //1-node면서 leaf
+                    if(node.isRoot == true) //1-node면서 leaf면서 root
                         node.key.remove(Integer.valueOf(val));
-                        System.out.print("tempNode : ");
-                        print(find(node, temp));
-                        System.out.println();
-                        node.key.add(temp);
-                        Collections.sort(node.key);
-                    }
+                    else{ //1-node면서 leaf면서 root는 아님 -> parent != null
+                        //Node parentNode = node.parent;
+                        if(node.parent.key.size() == 2){
+                            if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){ //case1
+                               node.key.remove(Integer.valueOf(val));
+                               node.key.add(node.parent.key.get(0));
+                               node.key.add(node.parent.pointer.get(1).key.get(0));
+                               node.parent.key.remove(0);
+                               node.parent.pointer.remove(1);
 
-                    else{
+                               Collections.sort(node.key);
+                               Collections.sort(node.parent.key);
+                            }
+                            else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){ //case2
+                                System.out.println("case2");
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.key.add(node.parent.pointer.get(1).key.get(0));
+                                node.parent.pointer.get(1).key.remove(0);
+
+                                Collections.sort(node.key);
+                                Collections.sort(node.parent.key);
+                                Collections.sort(node.parent.pointer.get(1).key);
+                            }
+                            else if(idx == 1 && node.parent.pointer.get(0).key.size() == 2){ //case3
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.key.add(node.parent.pointer.get(0).key.get(1));
+                                node.parent.pointer.get(0).key.remove(1);
+
+                                Collections.sort(node.key);
+                                Collections.sort(node.parent.key);
+                                Collections.sort(node.parent.pointer.get(0).key);
+                            }
+                            else if(idx == 1 && node.parent.pointer.get(2).key.size() == 2){ //case4
+                                System.out.println("case4");
+                                node.key.remove(Integer.valueOf(val));
+                                node.parent.pointer.get(0).key.add(node.parent.key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.pointer.remove(1);
+
+                                Collections.sort(node.parent.key);
+                            }
+                            else if(idx == 1){ //case5
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(1));
+                                node.key.add(node.parent.pointer.get(2).key.get(0));
+                                node.parent.key.remove(1);
+                                node.parent.pointer.remove(2);
+
+                                Collections.sort(node.key);
+                                Collections.sort(node.parent.key);
+                            }
+                            else if(idx == 2 && node.parent.pointer.get(1).key.size() == 1){ //case6
+                                node.key.remove(Integer.valueOf(val));
+                                node.parent.pointer.get(1).key.add(node.parent.key.get(1));
+                                node.parent.key.remove(1);
+                                node.parent.pointer.remove(2);
+
+                                Collections.sort(node.parent.pointer.get(1).key);
+                            }
+                            else if(idx == 2 && node.parent.pointer.get(1).key.size() == 2){ //case7
+                                System.out.println("case7");
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(1));
+                                node.parent.key.remove(1);
+                                node.parent.key.add(node.parent.pointer.get(1).key.get(1));
+                                node.parent.pointer.get(1).key.remove(1);
+
+                                Collections.sort(node.key);
+                                Collections.sort(node.parent.key);
+                            }
+                        }
+                        else if(node.parent.key.size() == 1){
+                            if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){ //재귀 돌려야 함
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(0));
+                                node.key.add(node.parent.pointer.get(1).key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.pointer.remove(1);
+
+                                Collections.sort(node.key);
+
+                                delete(node.parent, val, true);
+                            }
+                            else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){
+                                System.out.println("case2");
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.key.add(node.parent.pointer.get(1).key.get(0));
+                                node.parent.pointer.get(1).key.remove(0);
+                            }
+                            else if(idx == 1 && node.parent.pointer.get(0).key.size() == 1){ //재귀 돌려야 함
+                                node.parent.pointer.get(0).key.add(node.parent.key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.pointer.remove(1);
+
+                                Collections.sort(node.parent.pointer.get(0).key);
+
+                                delete(node.parent.pointer.get(0).parent, val, true);
+                            }
+                            else if(idx == 1 && node.parent.pointer.get(0).key.size() == 2){
+                                node.key.remove(Integer.valueOf(val));
+                                node.key.add(node.parent.key.get(0));
+                                node.parent.key.remove(0);
+                                node.parent.key.add(node.parent.pointer.get(0).key.get(1));
+                                node.parent.pointer.get(0).key.remove(1);
+                            }
+                        }
+                    }
+                }
+                else{ //1-node면서 leaf는 아님
+
+                }
+            }
+
+            else{
+                System.out.println("void node!");
+                if(node.isRoot == true){
+                    System.out.println("The root is null!!");
+                    this.root = node.pointer.get(0);
+                }
+                else{
+                    if(node.parent.key.size() == 1){
+                        if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){
+                            node.key.add(node.parent.key.get(0));
+                            node.key.add(node.parent.pointer.get(1).key.get(0));
+                            node.parent.key.remove(0);
+                            node.pointer.add(node.parent.pointer.get(1).pointer.get(0));
+                            node.pointer.add(node.parent.pointer.get(1).pointer.get(1));
+                            node.parent.pointer.remove(1);
+
+                            delete(node.parent, val, true);
+                        }
+
+                        else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){
+                            node.key.add(node.parent.key.get(0));
+                            node.parent.key.add(node.parent.pointer.get(1).key.get(0));
+                            node.parent.key.remove(0);
+                            node.parent.pointer.get(1).key.remove(0);
+                            node.pointer.add(node.parent.pointer.get(1).pointer.get(0));
+                            node.parent.pointer.get(1).pointer.remove(0);
+                        }
+                    }
+                    else if(node.parent.key.size() == 2){
 
                     }
                 }
             }
         }
-
-        else if(node.key.size() == 1){
-            if (val < node.key.get(0))
-                delete(node.pointer.get(0), val, false);
-            else if (val > node.key.get(0))
-                delete(node.pointer.get(1), val, false);
-            else{
-
-            }
-        }
-    } */
-
-    public void delete(Node node, int val, boolean recursive_down){
-        print(node);
-        System.out.println(", size : " + node.key.size());
-        System.out.println();
-        
-        if(node.key.size() == 2){
+        else if(node.key.size() == 2){
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
             else if (val > node.key.get(0) && val < node.key.get(1))
                 delete(node.pointer.get(1), val, false);
             else if (val > node.key.get(1))
                 delete(node.pointer.get(2), val, false);
-            else{
-                if(node.pointer.get(0) == null){
-                    node.key.remove(Integer.valueOf(val));
-                }
-                else{ //사실 좌우 노드가 2-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
-                    if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
-                        print(find(node, findBiggestSmallNode(node, val, false)));
-                        int temp = findBiggestSmallNode(node, val, false);
-                        System.out.println("temp : " + temp);
-                        System.out.println();
-                        node.key.remove(Integer.valueOf(val));
-                        find(node, temp).key.remove(Integer.valueOf(temp));
-                        node.key.add(temp);
-                        Collections.sort(node.key);
-                    }
-
-                    else if(find(node, findSmallestBigNode(node, val, false)).key.size() == 2){
-                        print(find(node, findSmallestBigNode(node, val, false)));
-                        int temp = findSmallestBigNode(node, val, false);
-                        System.out.println("temp : " + temp);
-                        System.out.println();
-                        find(node, temp).key.remove(Integer.valueOf(temp));
-                        node.key.remove(Integer.valueOf(val));
-                        System.out.print("tempNode : ");
-                        print(find(node, temp));
-                        System.out.println();
-                        node.key.add(temp);
-                        Collections.sort(node.key);
-                    }
-
-                    else{
-                        //TODO
-                    }
-                }
-            }
         }
 
         else if(node.key.size() == 1){
-            System.out.println("D2");
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
             else if (val > node.key.get(0))
                 delete(node.pointer.get(1), val, false);
-            else{
-                if(node.pointer.get(0) != null){ //사실 좌우 노드가 2-node인지는 중요하지 않다. 결국에 내가 바꿀 수 있는 노드가 2-node인지 확인하는 것이 중요.
-                    if(find(node, findBiggestSmallNode(node, val, false)).key.size() == 2){
-                        print(find(node, findBiggestSmallNode(node, val, false)));
-                        int temp = findBiggestSmallNode(node, val, false);
-                        System.out.println("temp : " + temp);
-                        System.out.println();
-                        find(node, temp).key.remove(Integer.valueOf(temp));
-                        node.key.remove(Integer.valueOf(val));
-                        node.key.add(temp);
-                        Collections.sort(node.key);
-                    }
-
-                    else if(find(node, findSmallestBigNode(node, val, false)).key.size() == 2){
-                        print(find(node, findSmallestBigNode(node, val, false)));
-                        int temp = findSmallestBigNode(node, val, false);
-                        System.out.println("temp : " + temp);
-                        System.out.println();
-                        find(node, temp).key.remove(Integer.valueOf(temp));
-                        node.key.remove(Integer.valueOf(val));
-                        System.out.print("tempNode : ");
-                        //print(find(node, temp));
-                        System.out.println();
-                        node.key.add(temp);
-                        Collections.sort(node.key);
-                    }
-
-                    else{
-                        int idx = (node.parent == null) ? 0 : node.parent.pointer.indexOf(node);
-                        int biggestSmallIdx = find(node, findBiggestSmallNode(node, val, false)).parent.pointer.indexOf(find(node, findBiggestSmallNode(node, val, false)));
-                        int smalllestBigIdx = find(node, findSmallestBigNode(node, val, false)).parent.pointer.indexOf(find(node, findSmallestBigNode(node, val, false)));
-                        print(node);
-                        System.out.println();
-                        System.out.println("node.parent.pointer.indexOf(node) : " + idx);
-                        System.out.println("biggestSmallIdx : " + biggestSmallIdx);
-                        System.out.println("smalllestBigIdx : " + smalllestBigIdx);
-
-                        if(find(node, findBiggestSmallNode(node, val, false)).parent.pointer.get(biggestSmallIdx-1).key.size() == 2){
-                            print(find(node, findBiggestSmallNode(node, val, false)).parent.pointer.get(biggestSmallIdx-1));
-                            System.out.println();
-
-                            int temp = findBiggestSmallNode(node, val, false);
-                            Node tempNode = find(node, findBiggestSmallNode(node, val, false));
-                            
-                            print(tempNode.parent.pointer.get(tempNode.parent.pointer.indexOf(tempNode)-1));
-                            System.out.println();
-
-                            node.key.add(temp);
-                            node.key.remove(Integer.valueOf(val));
-                            tempNode.key.add(tempNode.parent.key.get(tempNode.parent.key.size()-1));
-                            tempNode.key.remove(Integer.valueOf(temp));
-                            tempNode.parent.key.add(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.get(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.size()-1));
-                            tempNode.parent.key.remove(tempNode.parent.key.get(tempNode.parent.key.size()-2));
-                            tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.remove(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key.size()-1);
-                        
-                            Collections.sort(node.key);
-                            Collections.sort(tempNode.key);
-                            Collections.sort(tempNode.parent.key);
-                            Collections.sort(tempNode.parent.pointer.get(tempNode.parent.key.size()-1).key);
-                        }
-
-                        else if(find(node, findSmallestBigNode(node, val, false)).parent.pointer.get(smalllestBigIdx+1).key.size() == 2){
-                            print(find(node, findSmallestBigNode(node, val, false)).parent.pointer.get(smalllestBigIdx+1));
-                            System.out.println();
-
-                            int temp = findSmallestBigNode(node, val, false);
-                            Node tempNode = find(node, findSmallestBigNode(node, val, false));
-                            
-                            print(tempNode.parent.pointer.get(tempNode.parent.pointer.indexOf(tempNode)+1));
-                            System.out.println();
-
-                            node.key.add(temp);
-                            node.key.remove(Integer.valueOf(val));
-                            tempNode.key.add(tempNode.parent.key.get(0));
-                            tempNode.key.remove(Integer.valueOf(temp));
-                            tempNode.parent.key.add(tempNode.parent.pointer.get(1).key.get(0));
-                            tempNode.parent.key.remove(0);
-                            tempNode.parent.pointer.get(1).key.remove(0);
-                        
-                            Collections.sort(node.key);
-                            Collections.sort(tempNode.key);
-                            Collections.sort(tempNode.parent.key);
-                            Collections.sort(tempNode.parent.pointer.get(1).key);
-                        }
-
-                        else{
-                            if(find(node, findBiggestSmallNode(node, val, false)).parent.key == 2){
-                                int temp = findBiggestSmallNode(node, val, false);
-                                Node tempNode = find(node, findBiggestSmallNode(node, val, false));
-
-                                node.key.add(temp);
-                                node.key.remove(Integer.valueOf(val));
-                                tempNode.parent.pointer.get(biggestSmallIdx-1).key.add(Integer.valueOf(temp));
-                                tempNode.parent.pointer.remove(2);
-
-                                Collections.sort(node.key);
-                                Collections.sort(tempNode.parent.pointer.get(biggestSmallIdx-1).key);
-                            }
-
-                            else if(find(node, findSmallestBigNode(node, val, false)).parent.key == 2){
-                                int temp = findSmallestBigNode(node, val, false);
-                                Node tempNode = find(node, findSmallestBigNode(node, val, false));
-
-                                node.key.add(temp);
-                                node.key.remove(Integer.valueOf(val));
-                                tempNode.key.remove(Integer.valueOf(temp));
-                                tempNode.key.add(tempNode.parent.key.get(0));
-                                tempNode.key.add(tempNode.parent.pointer.get(1).key.get(0));
-                                tempNode.parent.key.remove(0);
-
-                                if(tempNode.parent.pointer.get(2).key.get(0) != null)
-                                    tempNode.parent.pointer.get(1).add(tempNode.parent.pointer.get(2).key.get(0));
-                                if(tempNode.parent.pointer.get(2).key.get(1) != null)
-                                    tempNode.parent.pointer.get(1).add(tempNode.parent.pointer.get(2).key.get(1));
-
-                                tempNode.parent.pointer.remove(2);
-
-                                Collections.sort(node.key);
-                                Collections.sort(tempNode.key);
-                                Collections.sort(tempNode.parent.key);
-                                Collections.sort(tempNode.parent.pointer.get(1).key);
-                            }
-
-                            else {
-                                
-                            }
-                        }
-                    }
-                }
-
-                else {
-                    //TODO
-                }
-            }
         }
-    }
+    } 
 
     public int findBiggestSmallNode(Node node, int val, boolean recursive_down){
         //System.out.println(val);
@@ -661,28 +599,23 @@ public class TwoThreeTree {
         // tree.myorder(root);
         // tree.print(root);
 
-        tree.insert(root, 5, false);
-        tree.insert(root, 3, false);
-        tree.insert(root, 7, false);
-        tree.insert(root, 2, false);
-        tree.insert(root, 4, false);
-        tree.insert(root, 6, false);
-        tree.insert(root, 8, false);
         tree.insert(root, 1, false);
+        tree.insert(root, 2, false);
+        tree.insert(root, 3, false);
+        tree.insert(root, 4, false);
+        tree.insert(root, 5, false);
+        tree.insert(root, 6, false);
+        tree.insert(root, 7, false);
+        tree.insert(root, 8, false);
+        tree.insert(root, 9, false);
+
         System.out.println("--------------------------------");
         tree.myorder(root);
         tree.print(root);
         System.out.println();
-        tree.delete(root, 5, false);
+        tree.delete(root, 1, false);
         tree.myorder(root);
-        tree.print(root);
-        tree.insert(root, 9, false);
-        tree.myorder(root);
-        tree.print(root);
-        System.out.println();
-        tree.delete(root, 4, false);
-        tree.myorder(root);
-        tree.print(root);
+        tree.print(tree.root);
         System.out.println();
 
         // while(true){
