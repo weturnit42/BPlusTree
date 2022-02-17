@@ -249,10 +249,35 @@ class Tree {
             System.out.print("node.pointer.get(2) : ");
             print(node.pointer.get(2));
             System.out.println();
-        }
 
-        int idx = (node == null || node.parent == null) ? 0 : node.parent.pointer.indexOf(node);
-        System.out.println("Deleting " + val + ", recursive_up is " + recursive_up);
+            if(node.pointer.get(1) == null)
+                System.out.println("Something wrong");
+        }
+        int idx = 0;
+        if(node.parent == null && node.key.size() == 0){
+            this.root = node.pointer.get(0);
+            this.root.isRoot = true;
+        }
+        else if(node.key.size() != 0)
+            idx = (node.parent == null) ? 0 : node.parent.pointer.indexOf(node);
+        else{
+            if(node.parent.key.size() == 1){
+                if(node.parent.pointer.get(0).key.size() == 0) 
+                    idx = 0;
+                else
+                    idx = 1;
+            }
+
+            else if(node.parent.key.size() == 2){
+                if(node.parent.pointer.get(0).key.size() == 0) 
+                    idx = 0;
+                else if(node.parent.pointer.get(1).key.size() == 0)
+                    idx = 1;
+                else
+                    idx = 2;
+            }
+        }
+        System.out.println("Deleting " + val + ", recursive_up is " + recursive_up + ", idx : " + idx);
 
         if(recursive_up == true || node.key.contains(Integer.valueOf(val))){
             System.out.println("case1");
@@ -438,23 +463,31 @@ class Tree {
                 }
                 else{ //1-node면서 leaf는 아님
                     Node biggestSmallNode = find(node, findBiggestSmallNode(node, val, false));
+                    System.out.print("biggestSmallNode : ");
+                    print(biggestSmallNode);
+                    System.out.println();
                     Node smallestBigNode = find(node, findSmallestBigNode(node, val, false));
+                    System.out.print("smallestBigNode : ");
+                    print(smallestBigNode);
+                    System.out.println();
 
                     System.out.println("case1-2-2");
                     if(biggestSmallNode.key.size() == 2){
                         System.out.println("case1-2-2-1");
                         int temp = findBiggestSmallNode(node, val, false);
 
-                        node.key.remove(0);
+                        node.key.remove(Integer.valueOf(val));
                         node.key.add(temp);
                         biggestSmallNode.key.remove(Integer.valueOf(temp));
+
+                        Collections.sort(node.key);
                     }
 
                     else if(smallestBigNode.key.size() == 2){
                         System.out.println("case1-2-2-2");
                         int temp = findSmallestBigNode(node, val, false);
 
-                        node.key.remove(0);
+                        node.key.remove(Integer.valueOf(val));
                         node.key.add(temp);
                         smallestBigNode.key.remove(Integer.valueOf(temp));
                     }
@@ -463,9 +496,11 @@ class Tree {
                         System.out.println("case1-2-2-3");
                         int temp = findBiggestSmallNode(node, val, false);
 
-                        node.key.remove(0);
+                        node.key.remove(Integer.valueOf(val));
                         node.key.add(temp);
                         biggestSmallNode.key.remove(Integer.valueOf(temp));
+
+                        Collections.sort(node.key);
 
                         delete(biggestSmallNode, val, true);
                     }
@@ -868,8 +903,8 @@ class RandomizedNumber {
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
-        int size = 100;
-        int del = 50;
+        int size = 20;
+        int del = 10;
         RandomizedNumber rn = new RandomizedNumber(size);
 
         Tree tree = new Tree();
