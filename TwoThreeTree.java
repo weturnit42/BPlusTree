@@ -8,8 +8,10 @@ class Tree {
     Node root;
 
     public void print(Node node) {
-        if(node == null)
+        if(node == null){
             System.out.print("null");
+            return;
+        }
         for (int i = 0; i < node.key.size(); i++)
             System.out.print(node.key.get(i) + " ");
     }
@@ -523,10 +525,10 @@ class Tree {
                             node.key.add(node.parent.key.get(0));
                             node.key.add(node.parent.pointer.get(1).key.get(0));
                             node.parent.key.remove(0);
-                            node.pointer.add(node.parent.pointer.get(1).pointer.get(0));
+                            node.pointer.add(1, node.parent.pointer.get(1).pointer.get(0));
                             if(node.pointer.get(1) != null)
                                 node.pointer.get(1).parent = node;
-                            node.pointer.add(node.parent.pointer.get(1).pointer.get(1));
+                            node.pointer.add(2, node.parent.pointer.get(1).pointer.get(1));
                             if(node.pointer.get(2) != null)
                                 node.pointer.get(2).parent = node;
                             node.parent.pointer.remove(1);
@@ -542,7 +544,7 @@ class Tree {
                             node.parent.key.add(node.parent.pointer.get(1).key.get(0));
                             node.parent.key.remove(0);
                             node.parent.pointer.get(1).key.remove(0);
-                            node.pointer.add(node.parent.pointer.get(1).pointer.get(0));
+                            node.pointer.add(1, node.parent.pointer.get(1).pointer.get(0));
                             if(node.pointer.get(1) != null)
                                 node.pointer.get(1).parent = node;
                             node.parent.pointer.get(1).pointer.remove(0);
@@ -555,7 +557,7 @@ class Tree {
                             System.out.println("case1-3-1-3");
                             node.parent.pointer.get(0).key.add(node.parent.key.get(0));
                             node.parent.key.remove(0);
-                            node.parent.pointer.get(0).pointer.add(node.pointer.get(0));
+                            node.parent.pointer.get(0).pointer.add(2, node.pointer.get(0));
                             if(node.parent.pointer.get(0).pointer.get(2) != null)
                                 node.parent.pointer.get(0).pointer.get(2).parent = node.parent.pointer.get(0);
                             node.parent.pointer.remove(1);
@@ -571,6 +573,18 @@ class Tree {
                             node.parent.key.add(node.parent.pointer.get(0).key.get(1));
                             node.parent.key.remove(0);
                             node.parent.pointer.get(0).key.remove(1);
+                            // System.out.println("node.parent.pointer.get(0).key.size() : " + node.parent.pointer.get(0).key.size());
+                            // System.out.println("node.parent.pointer.get(0).pointer.size() : " + node.parent.pointer.get(0).pointer.size());
+                            // print(node.parent.pointer.get(0));
+                            // System.out.println();
+                            // print(node.parent.pointer.get(0).pointer.get(0));
+                            // System.out.println();
+                            // print(node.parent.pointer.get(0).pointer.get(1));
+                            // System.out.println();
+                            if(node.parent.pointer.get(0).pointer.size() == 2) //위험한 코드 20220218
+                                node.parent.pointer.get(0).pointer.add(null);
+                            print(node.parent.pointer.get(0).pointer.get(2));
+                            System.out.println();
                             node.pointer.add(0, node.parent.pointer.get(0).pointer.get(2));
                             if(node.pointer.get(0) != null)
                                 node.pointer.get(0).parent = node;
@@ -588,10 +602,10 @@ class Tree {
                             node.key.add(node.parent.pointer.get(1).key.get(0));
                             node.parent.key.remove(0);
                             node.parent.pointer.get(1).key.remove(0);
-                            node.pointer.add(node.parent.pointer.get(1).pointer.get(0));
+                            node.pointer.add(1, node.parent.pointer.get(1).pointer.get(0));
                             if(node.pointer.get(1) != null)
                                 node.pointer.get(1).parent = node;
-                            node.pointer.add(node.parent.pointer.get(1).pointer.get(1));
+                            node.pointer.add(2, node.parent.pointer.get(1).pointer.get(1));
                             if(node.pointer.get(2) != null)
                                 node.pointer.get(2).parent = node;
                             node.parent.pointer.remove(1);
@@ -605,7 +619,7 @@ class Tree {
                             node.parent.key.remove(0);
                             node.parent.key.add(0, node.parent.pointer.get(1).key.get(0));
                             node.parent.pointer.get(1).key.remove(0);
-                            node.pointer.add(node.parent.pointer.get(1).pointer.get(0));
+                            node.pointer.add(1, node.parent.pointer.get(1).pointer.get(0));
                             if(node.pointer.get(1) != null)
                                 node.pointer.get(1).parent = node;
                             node.parent.pointer.get(1).pointer.remove(0);
@@ -617,7 +631,7 @@ class Tree {
                             System.out.println("case1-3-2-3");
                             node.parent.pointer.get(0).key.add(node.parent.key.get(0));
                             node.parent.key.remove(0);
-                            node.parent.pointer.get(0).pointer.add(node.pointer.get(0));
+                            node.parent.pointer.get(0).pointer.add(2, node.pointer.get(0));
                             if(node.parent.pointer.get(0).pointer.get(2) != null)
                                 node.parent.pointer.get(0).pointer.get(2).parent = node.parent.pointer.get(0);
                             node.parent.pointer.remove(1);
@@ -629,6 +643,18 @@ class Tree {
                             node.parent.key.remove(0);
                             node.parent.key.add(0, node.parent.pointer.get(0).key.get(1));
                             node.parent.pointer.get(0).key.remove(1);
+                            // System.out.println("node.parent.pointer.get(0).key.size() : " + node.parent.pointer.get(0).key.size());
+                            // System.out.println("node.parent.pointer.get(0).pointer.size() : " + node.parent.pointer.get(0).pointer.size());
+                            // print(node.parent.pointer.get(0));
+                            // System.out.println();
+                            // print(node.parent.pointer.get(0).pointer.get(0));
+                            // System.out.println();
+                            // print(node.parent.pointer.get(0).pointer.get(1));
+                            // System.out.println();
+                            // print(node.parent.pointer.get(0).pointer.get(2));
+                            // System.out.println();
+                            if(node.parent.pointer.get(0).pointer.size() == 2) //위험한 코드 20220218
+                                node.parent.pointer.get(0).pointer.add(null);
                             node.pointer.add(0, node.parent.pointer.get(0).pointer.get(2));
                             if(node.pointer.get(0) != null)
                                 node.pointer.get(0).parent = node;
@@ -639,7 +665,7 @@ class Tree {
                             System.out.println("case1-3-2-5");
                             node.parent.pointer.get(1).key.add(node.parent.key.get(1));
                             node.parent.key.remove(1);
-                            node.parent.pointer.get(1).pointer.add(node.pointer.get(0));
+                            node.parent.pointer.get(1).pointer.add(2, node.pointer.get(0));
                             if(node.parent.pointer.get(1).pointer.get(2) != null)
                                 node.parent.pointer.get(1).pointer.get(2).parent = node.parent.pointer.get(1);
                             node.parent.pointer.remove(2);
@@ -903,8 +929,8 @@ class RandomizedNumber {
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
-        int size = 20;
-        int del = 10;
+        int size = 10000;
+        int del = 5000;
         RandomizedNumber rn = new RandomizedNumber(size);
 
         Tree tree = new Tree();
