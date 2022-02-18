@@ -85,14 +85,14 @@ class Tree {
             node.pointer.add(null);
         }
         else {
-            System.out.print("going down to "); //이미 root가 있는 경우
-            this.print(node);
-            System.out.println();
+            //System.out.print("going down to "); //이미 root가 있는 경우
+            //this.print(node);
+            //System.out.println();
 
             if(node.pointer.get(0) == null || recursive_up == true){ //leaf에 도달했거나 재귀적으로 반복했을 경우
-                System.out.println("found where to insert " + val);
-                this.print(node);
-                System.out.println();
+                //System.out.println("found where to insert " + val);
+                //this.print(node);
+                //System.out.println();
                 if (node.key.size() <= 3) {
                     node.key.add(val);
                     node.pointer.add(null);
@@ -100,9 +100,9 @@ class Tree {
     
                     if (node.key.size() == 3) { //만약 키가 3개라면 == split이 필요한 경우라면
                         if (node.parent == null) { //만약 parent가 없을 때 == node가 root일 때
-                            System.out.println("I'm the root!");
-                            this.print(root);
-                            System.out.println();
+                            //System.out.println("I'm the root!");
+                            //this.print(root);
+                            //System.out.println();
                             int mid = node.key.get(1); //node를 새롭게 만드는 것이 아닌, 원래의 노드를 parent로 활용한다.
                             Node left = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1)); //leftChild 생성
                             Node right = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3)); //rightChild 생성
@@ -118,18 +118,18 @@ class Tree {
                             right.parent = node;
     
                         } else { //node가 root가 아닐 때
-                            System.out.println("insert : " + val + ", node.parent.key.size() : " + node.parent.key.size());
-                            System.out.print("Node.parent : ");
-                            this.print(node.parent);
-                            System.out.println();
+                            //System.out.println("insert : " + val + ", node.parent.key.size() : " + node.parent.key.size());
+                            //System.out.print("Node.parent : ");
+                            //this.print(node.parent);
+                            //System.out.println();
                             if (node.parent.key.size() == 1) { //parent size가 1일 때 == 재귀적으로 split이 필요없다.
                                 int mid = node.key.get(1);
-                                System.out.println("mid1 : " + mid);
-                                System.out.println("node.parent.key.get(0) : " + node.parent.key.get(0));
+                                //System.out.println("mid1 : " + mid);
+                                //System.out.println("node.parent.key.get(0) : " + node.parent.key.get(0));
 
                                 Node child1 = null, child2 = null, child3 = null;
                                 if(mid < node.parent.key.get(0)) { //왜 나누는 거?
-                                    System.out.println("mid < node.parent.key.get(0)");
+                                    //System.out.println("mid < node.parent.key.get(0)");
                                     child1 = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1));
                                     child2 = new Node(node.key.get(2), node.pointer.get(2), node.pointer.get(3));
                                     child3 = node.parent.pointer.get(1);
@@ -138,7 +138,7 @@ class Tree {
                                     System.out.println("Same key inserted");
                                 }
                                 else if(mid > node.parent.key.get(0)){
-                                    System.out.println("mid > node.parent.key.get(0)");
+                                    //System.out.println("mid > node.parent.key.get(0)");
                                     child1 = node.parent.pointer.get(0);
                                     child2 = new Node(node.key.get(0), node.pointer.get(0), node.pointer.get(1)); //여기 말하는 거
                                     //System.out.println("node.key.get(0) : " + node.key.get(0));
@@ -159,9 +159,9 @@ class Tree {
                                 Collections.sort(node.parent.key);
                             } else if (node.parent.key.size() == 2) { //parent size가 2일 때 == 재귀적으로 split이 필요하다.
                                 int mid = node.key.get(1);
-                                System.out.println("mid2 : " + mid);
-                                System.out.println("node.parent.key.get(0) : " + node.parent.key.get(0));
-                                System.out.println("node.parent.key.get(1) : " + node.parent.key.get(1));
+                                // System.out.println("mid2 : " + mid);
+                                // System.out.println("node.parent.key.get(0) : " + node.parent.key.get(0));
+                                // System.out.println("node.parent.key.get(1) : " + node.parent.key.get(1));
 
                                 Node child1 = null, child2 = null, child3 = null, child4 = null;
                                 if(mid < node.parent.key.get(0)) {
@@ -223,38 +223,39 @@ class Tree {
     }
     
     public void delete(Node node, int val, boolean recursive_up){
-        if(node != null && node.parent != null){
-            System.out.print("node.parent : ");
-            print(node.parent);
-            System.out.println();
-        }
+        //System.out.println("Deleting " + val);
+        // if(node != null && node.parent != null){
+        //     System.out.print("node.parent : ");
+        //     print(node.parent);
+        //     System.out.println();
+        // }
 
-        if(node != null){
-            System.out.print("node : ");
-            print(node);
-            System.out.println();
-        }
+        // if(node != null){
+        //     System.out.print("node : ");
+        //     print(node);
+        //     System.out.println();
+        // }
         
-        if(node != null && node.pointer.get(0) != null){
-            System.out.print("node.pointer.get(0) : "); 
-            print(node.pointer.get(0));
-            System.out.println();
-        }
+        // if(node != null && node.pointer.get(0) != null){
+        //     System.out.print("node.pointer.get(0) : "); 
+        //     print(node.pointer.get(0));
+        //     System.out.println();
+        // }
         
-        if(node != null && node.pointer.size() > 1 && node.pointer.get(1) != null){
-            System.out.print("node.pointer.get(1) : ");
-            print(node.pointer.get(1));
-            System.out.println();
-        }
+        // if(node != null && node.pointer.size() > 1 && node.pointer.get(1) != null){
+        //     System.out.print("node.pointer.get(1) : ");
+        //     print(node.pointer.get(1));
+        //     System.out.println();
+        // }
 
-        if(node != null && node.pointer.size() > 2 && node.pointer.get(2) != null){
-            System.out.print("node.pointer.get(2) : ");
-            print(node.pointer.get(2));
-            System.out.println();
+        // if(node != null && node.pointer.size() > 2 && node.pointer.get(2) != null){
+        //     System.out.print("node.pointer.get(2) : ");
+        //     print(node.pointer.get(2));
+        //     System.out.println();
 
-            if(node.pointer.get(1) == null)
-                System.out.println("Something wrong");
-        }
+        //     if(node.pointer.get(1) == null)
+        //         System.out.println("Something wrong");
+        // }
         int idx = 0;
         if(node.parent == null && node.key.size() == 0){
             this.root = node.pointer.get(0);
@@ -282,9 +283,9 @@ class Tree {
         System.out.println("Deleting " + val + ", recursive_up is " + recursive_up + ", idx : " + idx);
 
         if(recursive_up == true || node.key.contains(Integer.valueOf(val))){
-            System.out.println("case1");
+            //System.out.println("case1");
             if(node.key.size() == 2){
-                System.out.println("case1-1");
+                //System.out.println("case1-1");
                 if(node.pointer.get(0) == null){ //node가 2-node면서 leaf인 경우
                     node.key.remove(Integer.valueOf(val));
                 }
@@ -292,9 +293,9 @@ class Tree {
                     Node biggestSmallNode = find(node, findBiggestSmallNode(node, val, false));
                     Node smallestBigNode = find(node, findSmallestBigNode(node, val, false));
 
-                    System.out.println("case1-1-2");
+                    //System.out.println("case1-1-2");
                     if(biggestSmallNode.key.size() == 2){
-                        System.out.println("case1-1-2-1");
+                        //System.out.println("case1-1-2-1");
                         int temp = findBiggestSmallNode(node, val, false);
 
                         node.key.remove(Integer.valueOf(val));
@@ -304,7 +305,7 @@ class Tree {
                     }
 
                     else if(smallestBigNode.key.size() == 2){
-                        System.out.println("case1-1-2-2");
+                        //System.out.println("case1-1-2-2");
                         int temp = findSmallestBigNode(node, val, false);
 
                         node.key.remove(Integer.valueOf(val));
@@ -314,7 +315,7 @@ class Tree {
                     }
 
                     else {
-                        System.out.println("case1-1-2-3");
+                        //System.out.println("case1-1-2-3");
                         int temp = findBiggestSmallNode(node, val, false);
 
                         node.key.remove(Integer.valueOf(val));
@@ -329,19 +330,19 @@ class Tree {
             }
 
             else if(node.key.size() == 1){
-                System.out.println("case1-2");
+                //System.out.println("case1-2");
                 if(node.pointer.get(0) == null){ //1-node면서 leaf
-                    System.out.println("case1-2-1");
+                    //System.out.println("case1-2-1");
                     if(node.isRoot == true) //1-node면서 leaf면서 root
                         node.key.remove(Integer.valueOf(val));
                     else{ //1-node면서 leaf면서 root는 아님 -> parent != null
                         //Node parentNode = node.parent;
-                        print(node.parent);
-                        System.out.println();
-                        System.out.println("node.parent.key.size() : " + node.parent.key.size());
+                        // print(node.parent);
+                        // System.out.println();
+                        // System.out.println("node.parent.key.size() : " + node.parent.key.size());
                         if(node.parent.key.size() == 2){
                             if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){ //case1
-                                System.out.println("case1-2-1-1");
+                                //System.out.println("case1-2-1-1");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(0));
                                 node.key.add(node.parent.pointer.get(1).key.get(0));
@@ -352,7 +353,7 @@ class Tree {
                                 Collections.sort(node.parent.key);
                             }
                             else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){ //case2
-                                System.out.println("case1-2-1-2");
+                                //System.out.println("case1-2-1-2");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(0));
                                 node.parent.key.remove(0);
@@ -364,7 +365,7 @@ class Tree {
                                 Collections.sort(node.parent.pointer.get(1).key);
                             }
                             else if(idx == 1 && node.parent.pointer.get(0).key.size() == 2){ //case3
-                                System.out.println("case1-2-1-3");
+                                //System.out.println("case1-2-1-3");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(0));
                                 node.parent.key.remove(0);
@@ -376,7 +377,7 @@ class Tree {
                                 Collections.sort(node.parent.pointer.get(0).key);
                             }
                             else if(idx == 1 && node.parent.pointer.get(2).key.size() == 2){ //case4
-                                System.out.println("case1-2-1-4");
+                                //System.out.println("case1-2-1-4");
                                 node.key.remove(Integer.valueOf(val));
                                 // node.parent.pointer.get(0).key.add(node.parent.key.get(0));
                                 // node.parent.key.remove(0);
@@ -389,7 +390,7 @@ class Tree {
                                 Collections.sort(node.parent.key);
                             }
                             else if(idx == 1){ //case5
-                                System.out.println("case1-2-1-5");
+                                //System.out.println("case1-2-1-5");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(1));
                                 node.key.add(node.parent.pointer.get(2).key.get(0));
@@ -400,7 +401,7 @@ class Tree {
                                 Collections.sort(node.parent.key);
                             }
                             else if(idx == 2 && node.parent.pointer.get(1).key.size() == 2){ //case6
-                                System.out.println("case1-2-1-6");
+                                //System.out.println("case1-2-1-6");
                                 node.key.remove(Integer.valueOf(val));
                                 node.parent.pointer.get(2).key.add(node.parent.key.get(1));
                                 node.parent.key.remove(1);
@@ -411,7 +412,7 @@ class Tree {
                                 Collections.sort(node.parent.key);
                             }
                             else if(idx == 2 && node.parent.pointer.get(1).key.size() == 1){ //case7
-                                System.out.println("case1-2-1-7");
+                                //System.out.println("case1-2-1-7");
                                 node.key.remove(Integer.valueOf(val));
                                 node.parent.pointer.get(1).key.add(node.parent.key.get(1));
                                 node.parent.key.remove(1);
@@ -423,7 +424,7 @@ class Tree {
                         }
                         else if(node.parent.key.size() == 1){
                             if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){ //재귀 돌려야 함
-                                System.out.println("case1-2-1-8");
+                                //System.out.println("case1-2-1-8");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(0));
                                 node.key.add(node.parent.pointer.get(1).key.get(0));
@@ -435,7 +436,7 @@ class Tree {
                                 delete(node.parent, val, true);
                             }
                             else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){
-                                System.out.println("case1-2-1-9");
+                                //System.out.println("case1-2-1-9");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(0));
                                 node.parent.key.remove(0);
@@ -443,7 +444,7 @@ class Tree {
                                 node.parent.pointer.get(1).key.remove(0);
                             }
                             else if(idx == 1 && node.parent.pointer.get(0).key.size() == 1){ //재귀 돌려야 함
-                                System.out.println("case1-2-1-10");
+                                //System.out.println("case1-2-1-10");
                                 node.parent.pointer.get(0).key.add(node.parent.key.get(0));
                                 node.parent.key.remove(0);
                                 node.parent.pointer.remove(1);
@@ -453,7 +454,7 @@ class Tree {
                                 delete(node.parent.pointer.get(0).parent, val, true);
                             }
                             else if(idx == 1 && node.parent.pointer.get(0).key.size() == 2){
-                                System.out.println("case1-2-1-11");
+                                //System.out.println("case1-2-1-11");
                                 node.key.remove(Integer.valueOf(val));
                                 node.key.add(node.parent.key.get(0));
                                 node.parent.key.remove(0);
@@ -465,17 +466,17 @@ class Tree {
                 }
                 else{ //1-node면서 leaf는 아님
                     Node biggestSmallNode = find(node, findBiggestSmallNode(node, val, false));
-                    System.out.print("biggestSmallNode : ");
-                    print(biggestSmallNode);
-                    System.out.println();
+                    // System.out.print("biggestSmallNode : ");
+                    // print(biggestSmallNode);
+                    // System.out.println();
                     Node smallestBigNode = find(node, findSmallestBigNode(node, val, false));
-                    System.out.print("smallestBigNode : ");
-                    print(smallestBigNode);
-                    System.out.println();
+                    // System.out.print("smallestBigNode : ");
+                    // print(smallestBigNode);
+                    // System.out.println();
 
-                    System.out.println("case1-2-2");
+                    //System.out.println("case1-2-2");
                     if(biggestSmallNode.key.size() == 2){
-                        System.out.println("case1-2-2-1");
+                        //System.out.println("case1-2-2-1");
                         int temp = findBiggestSmallNode(node, val, false);
 
                         node.key.remove(Integer.valueOf(val));
@@ -486,7 +487,7 @@ class Tree {
                     }
 
                     else if(smallestBigNode.key.size() == 2){
-                        System.out.println("case1-2-2-2");
+                        //System.out.println("case1-2-2-2");
                         int temp = findSmallestBigNode(node, val, false);
 
                         node.key.remove(Integer.valueOf(val));
@@ -495,7 +496,7 @@ class Tree {
                     }
 
                     else {
-                        System.out.println("case1-2-2-3");
+                        //System.out.println("case1-2-2-3");
                         int temp = findBiggestSmallNode(node, val, false);
 
                         node.key.remove(Integer.valueOf(val));
@@ -510,18 +511,18 @@ class Tree {
             }
 
             else{
-                System.out.println("empty node!");
-                System.out.println("case1-3");
+                // System.out.println("empty node!");
+                // System.out.println("case1-3");
                 if(node.isRoot == true){
-                    System.out.println("The root is null!!");
+                    //System.out.println("The root is null!!");
                     this.root = node.pointer.get(0);
                     this.root.isRoot = true;
                 }
                 else{
                     if(node.parent.key.size() == 1){
-                        System.out.println("case1-3-1");
+                        //System.out.println("case1-3-1");
                         if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){
-                            System.out.println("case1-3-1-1");
+                            //System.out.println("case1-3-1-1");
                             node.key.add(node.parent.key.get(0));
                             node.key.add(node.parent.pointer.get(1).key.get(0));
                             node.parent.key.remove(0);
@@ -539,7 +540,7 @@ class Tree {
                         }
 
                         else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){
-                            System.out.println("case1-3-1-2");
+                            //System.out.println("case1-3-1-2");
                             node.key.add(node.parent.key.get(0));
                             node.parent.key.add(node.parent.pointer.get(1).key.get(0));
                             node.parent.key.remove(0);
@@ -554,7 +555,7 @@ class Tree {
                         }
 
                         else if(idx == 1 && node.parent.pointer.get(0).key.size() == 1){
-                            System.out.println("case1-3-1-3");
+                            //System.out.println("case1-3-1-3");
                             node.parent.pointer.get(0).key.add(node.parent.key.get(0));
                             node.parent.key.remove(0);
                             node.parent.pointer.get(0).pointer.add(2, node.pointer.get(0));
@@ -568,7 +569,7 @@ class Tree {
                         }
 
                         else if(idx == 1 && node.parent.pointer.get(0).key.size() == 2){
-                            System.out.println("case1-3-1-4");
+                            //System.out.println("case1-3-1-4");
                             node.key.add(node.parent.key.get(0));
                             node.parent.key.add(node.parent.pointer.get(0).key.get(1));
                             node.parent.key.remove(0);
@@ -583,8 +584,8 @@ class Tree {
                             // System.out.println();
                             if(node.parent.pointer.get(0).pointer.size() == 2) //위험한 코드 20220218
                                 node.parent.pointer.get(0).pointer.add(null);
-                            print(node.parent.pointer.get(0).pointer.get(2));
-                            System.out.println();
+                            //print(node.parent.pointer.get(0).pointer.get(2));
+                            //System.out.println();
                             node.pointer.add(0, node.parent.pointer.get(0).pointer.get(2));
                             if(node.pointer.get(0) != null)
                                 node.pointer.get(0).parent = node;
@@ -595,9 +596,9 @@ class Tree {
                         }
                     }
                     else if(node.parent.key.size() == 2){
-                        System.out.println("case1-3-2");
+                        //System.out.println("case1-3-2");
                         if(idx == 0 && node.parent.pointer.get(1).key.size() == 1){
-                            System.out.println("case1-3-2-1");
+                            //System.out.println("case1-3-2-1");
                             node.key.add(node.parent.key.get(0));
                             node.key.add(node.parent.pointer.get(1).key.get(0));
                             node.parent.key.remove(0);
@@ -614,7 +615,7 @@ class Tree {
                         }
 
                         else if(idx == 0 && node.parent.pointer.get(1).key.size() == 2){
-                            System.out.println("case1-3-2-2");
+                            //System.out.println("case1-3-2-2");
                             node.key.add(node.parent.key.get(0));
                             node.parent.key.remove(0);
                             node.parent.key.add(0, node.parent.pointer.get(1).key.get(0));
@@ -628,7 +629,7 @@ class Tree {
                         }
 
                         else if(idx == 1 && node.parent.pointer.get(0).key.size() == 1){
-                            System.out.println("case1-3-2-3");
+                            //System.out.println("case1-3-2-3");
                             node.parent.pointer.get(0).key.add(node.parent.key.get(0));
                             node.parent.key.remove(0);
                             node.parent.pointer.get(0).pointer.add(2, node.pointer.get(0));
@@ -638,7 +639,7 @@ class Tree {
                         }
 
                         else if(idx == 1 && node.parent.pointer.get(0).key.size() == 2){
-                            System.out.println("case1-3-2-4");
+                            //System.out.println("case1-3-2-4");
                             node.key.add(node.parent.key.get(0));
                             node.parent.key.remove(0);
                             node.parent.key.add(0, node.parent.pointer.get(0).key.get(1));
@@ -662,7 +663,7 @@ class Tree {
                         }
 
                         else if(idx == 2 && node.parent.pointer.get(1).key.size() == 1){
-                            System.out.println("case1-3-2-5");
+                            //System.out.println("case1-3-2-5");
                             node.parent.pointer.get(1).key.add(node.parent.key.get(1));
                             node.parent.key.remove(1);
                             node.parent.pointer.get(1).pointer.add(2, node.pointer.get(0));
@@ -672,11 +673,13 @@ class Tree {
                         }
 
                         else if(idx == 2 && node.parent.pointer.get(1).key.size() == 2){
-                            System.out.println("case1-3-2-6");
+                            //System.out.println("case1-3-2-6");
                             node.key.add(node.parent.key.get(1));
                             node.parent.key.remove(1);
                             node.parent.key.add(node.parent.pointer.get(1).key.get(1));
                             node.parent.pointer.get(1).key.remove(1);
+                            if(node.parent.pointer.get(1).pointer.size() == 2) //위험한 코드 20220218
+                                node.parent.pointer.get(1).pointer.add(null);
                             node.pointer.add(0, node.parent.pointer.get(1).pointer.get(2));
                             if(node.pointer.get(0) != null)
                                 node.pointer.get(0).parent = node;
@@ -704,9 +707,9 @@ class Tree {
     } 
 
     public int findBiggestSmallNode(Node node, int val, boolean recursive_down){
-        System.out.println("val : " + val);
+        //System.out.println("val : " + val);
         if(val == node.key.get(0)){
-            System.out.println("type 1");
+            //System.out.println("type 1");
             if(recursive_down == false) {
                 
                 if(node.pointer.get(0) == null)
@@ -722,11 +725,11 @@ class Tree {
                 if(node.pointer.get(0) == null)
                     return node.key.get(node.key.size()-1);
                 else{
-                    System.out.println("node.pointer.size() : " + node.pointer.size());
-                    print(node);
-                    System.out.println();
-                    System.out.println(node.pointer.get(0) == null);
-                    System.out.println(node.pointer.get(node.pointer.size()-1) == null);
+                    // System.out.println("node.pointer.size() : " + node.pointer.size());
+                    // print(node);
+                    // System.out.println();
+                    // System.out.println(node.pointer.get(0) == null);
+                    // System.out.println(node.pointer.get(node.pointer.size()-1) == null);
                     int dangIdx;
                     if(node.key.size() == 2) //위험한 코드
                         dangIdx = 2;
@@ -737,7 +740,7 @@ class Tree {
             }
         }
         else{
-            System.out.println("type 2");
+            //System.out.println("type 2");
             if(recursive_down == false) {
                 if(node.pointer.get(1) == null)
                     return -1;
@@ -749,13 +752,13 @@ class Tree {
                     return findBiggestSmallNode(node.pointer.get(1), node.pointer.get(1).key.get(node.pointer.get(1).key.size()-1), true);
             }
             else{
-                System.out.println("type 2-2");
+                //System.out.println("type 2-2");
                 if(node.pointer.get(0) == null)
                     return node.key.get(node.key.size()-1);
                 else{
-                    System.out.println("node.pointer.size() : " + node.pointer.size());
-                    print(node);
-                    System.out.println();
+                    // System.out.println("node.pointer.size() : " + node.pointer.size());
+                    // print(node);
+                    // System.out.println();
                     // print(node.pointer.get(0));
                     // System.out.println();
                     // print(node.pointer.get(1));
@@ -764,7 +767,7 @@ class Tree {
                     // System.out.println();
                     // System.out.println(node.pointer.get(0) == null);
                     // System.out.println(node.pointer.get(node.pointer.size()-1) == null);
-                    System.out.println("type 2-2-2");
+                    //System.out.println("type 2-2-2");
                     int dangIdx;
                     if(node.key.size() == 2) //위험한 코드
                         dangIdx = 2;
@@ -806,8 +809,8 @@ class Tree {
                     return -1;
 
                 else if(node.pointer.get(2).pointer.get(0) == null){
-                    print(node.pointer.get(2));
-                    System.out.println();
+                    // print(node.pointer.get(2));
+                    // System.out.println();
                     return node.pointer.get(2).key.get(0);
                 }
 
@@ -949,14 +952,15 @@ public class TwoThreeTree {
     
 
         for(int i=0;i<del;i++){
-            System.out.print("tree : ");
-            tree.myorder(tree.root);
-            System.out.println();
+            // System.out.print("tree : ");
+            // tree.myorder(tree.root);
+            // System.out.println();
             tree.delete(tree.root, rn.number[i], false);
         }
         System.out.println("_______________________");
         System.out.println("rn : ");
         rn.print();
+        System.out.println("---------------------------------------");
         tree.myorder(tree.root);
         tree.print(tree.root);
         System.out.println();
