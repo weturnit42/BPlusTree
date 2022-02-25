@@ -75,7 +75,7 @@ class Tree {
                 return find(node.pointer.get(2), val);
         }
 
-        return node;
+        return null;
     }
 
     public void insert(Node node, int val, boolean recursive_up) {
@@ -223,7 +223,7 @@ class Tree {
     }
     
     public void delete(Node node, int val, boolean recursive_up){
-        //System.out.println("Deleting " + val);
+        // System.out.println("Deleting " + val);
         // if(node != null && node.parent != null){
         //     System.out.print("node.parent : ");
         //     print(node.parent);
@@ -582,8 +582,11 @@ class Tree {
                             // System.out.println();
                             // print(node.parent.pointer.get(0).pointer.get(1));
                             // System.out.println();
-                            if(node.parent.pointer.get(0).pointer.size() == 2) //위험한 코드 20220218
+                            if(node.parent.pointer.get(0).pointer.size() == 2) {
+                                System.out.println("Dang1");//위험한 코드 20220218
                                 node.parent.pointer.get(0).pointer.add(null);
+                            
+                            }
                             //print(node.parent.pointer.get(0).pointer.get(2));
                             //System.out.println();
                             node.pointer.add(0, node.parent.pointer.get(0).pointer.get(2));
@@ -654,8 +657,10 @@ class Tree {
                             // System.out.println();
                             // print(node.parent.pointer.get(0).pointer.get(2));
                             // System.out.println();
-                            if(node.parent.pointer.get(0).pointer.size() == 2) //위험한 코드 20220218
+                            if(node.parent.pointer.get(0).pointer.size() == 2){ //위험한 코드 20220218
+                                System.out.println("Dang2");
                                 node.parent.pointer.get(0).pointer.add(null);
+                            }
                             node.pointer.add(0, node.parent.pointer.get(0).pointer.get(2));
                             if(node.pointer.get(0) != null)
                                 node.pointer.get(0).parent = node;
@@ -678,8 +683,10 @@ class Tree {
                             node.parent.key.remove(1);
                             node.parent.key.add(node.parent.pointer.get(1).key.get(1));
                             node.parent.pointer.get(1).key.remove(1);
-                            if(node.parent.pointer.get(1).pointer.size() == 2) //위험한 코드 20220218
+                            if(node.parent.pointer.get(1).pointer.size() == 2){ //위험한 코드 20220218
+                                System.out.println("Dang3");
                                 node.parent.pointer.get(1).pointer.add(null);
+                            }
                             node.pointer.add(0, node.parent.pointer.get(1).pointer.get(2));
                             if(node.pointer.get(0) != null)
                                 node.pointer.get(0).parent = node;
@@ -731,10 +738,14 @@ class Tree {
                     // System.out.println(node.pointer.get(0) == null);
                     // System.out.println(node.pointer.get(node.pointer.size()-1) == null);
                     int dangIdx;
-                    if(node.key.size() == 2) //위험한 코드
+                    if(node.key.size() == 2){ //위험한 코드
+                        System.out.println("Dang4-1");
                         dangIdx = 2;
-                    else
+                    }
+                    else{
+                        System.out.println("Dang4-2");
                         dangIdx = 1;
+                    }
                     return findBiggestSmallNode(node.pointer.get(dangIdx), node.pointer.get(dangIdx).key.get(node.pointer.get(dangIdx).key.size()-1), true);
                 }
             }
@@ -769,10 +780,14 @@ class Tree {
                     // System.out.println(node.pointer.get(node.pointer.size()-1) == null);
                     //System.out.println("type 2-2-2");
                     int dangIdx;
-                    if(node.key.size() == 2) //위험한 코드
+                    if(node.key.size() == 2) {
+                        System.out.println("Dang5-1");//위험한 코드
                         dangIdx = 2;
-                    else
+                    }
+                    else{
+                        System.out.println("Dang5-2");
                         dangIdx = 1;
+                    }
                     return findBiggestSmallNode(node.pointer.get(dangIdx), node.pointer.get(dangIdx).key.get(node.pointer.get(dangIdx).key.size()-1), true);
                 }
             }
@@ -932,143 +947,210 @@ class RandomizedNumber {
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
-        int size = 10000;
-        int del = 5000;
-        RandomizedNumber rn = new RandomizedNumber(size);
+        // int size = 10000;
+        // int del = 5000;
+        // RandomizedNumber rn = new RandomizedNumber(size);
 
-        Tree tree = new Tree();
-        Node root = new Node();
-        root.isRoot = true;
-        tree.root = root;
+        // Tree tree = new Tree();
+        // Node root = new Node();
+        // root.isRoot = true;
+        // tree.root = root;
 
-        for(int i=0;i<size;i++)
-            tree.insert(tree.root, rn.number[i], false);
-        System.out.println("_______________________");
-        System.out.println("rn : ");
-        rn.print();
-        tree.myorder(tree.root);
-        tree.print(tree.root);
-        System.out.println();
+        // for(int i=0;i<size;i++)
+        //     tree.insert(tree.root, rn.number[i], false);
+        // System.out.println("_______________________");
+        // System.out.println("rn : ");
+        // rn.print();
+        // tree.myorder(tree.root);
+        // tree.print(tree.root);
+        // System.out.println();
     
 
-        for(int i=0;i<del;i++){
-            // System.out.print("tree : ");
-            // tree.myorder(tree.root);
-            // System.out.println();
-            tree.delete(tree.root, rn.number[i], false);
-        }
-        System.out.println("_______________________");
-        System.out.println("rn : ");
-        rn.print();
-        System.out.println("---------------------------------------");
-        tree.myorder(tree.root);
-        tree.print(tree.root);
-        System.out.println();
-    
+        // for(int i=0;i<del;i++){
+        //     // System.out.print("tree : ");
+        //     // tree.myorder(tree.root);
+        //     // System.out.println();
+        //     tree.delete(tree.root, rn.number[i], false);
+        // }
+        // System.out.println("_______________________");
+        // System.out.println("rn : ");
+        // rn.print();
+        // System.out.println("---------------------------------------");
+        // tree.myorder(tree.root);
+        // tree.print(tree.root);
+        // System.out.println();
 
-        // tree.insert(root, 30, false);
-        // tree.insert(root, 40, false);
-        // tree.insert(root, 10, false);
-        // tree.insert(root, 15, false);
-        // tree.insert(root, 35, false);
-        // tree.insert(root, 20, false);
-        // tree.insert(root, 5, false);
-        // tree.insert(root, 25, false);
-        // tree.insert(root, 1, false);
-        // tree.insert(root, 2, false);
-        // tree.insert(root, 3, false);
-        // tree.insert(root, 11, false);
-        // tree.insert(root, 12, false);
-        // tree.insert(root, 4, false);
-        // tree.insert(root, 6, false);
-        // tree.insert(root, 7, false);
-        // tree.insert(root, 8, false);
-        // tree.insert(root, 26, false);
-        // tree.insert(root, 27, false);
-        // tree.insert(root, 28, false);
+        // Tree tree = new Tree();
+        // Node root = new Node();
+        // root.isRoot = true;
+        // tree.root = root;
+
+        // tree.insert(root, 2045201421, false);
+        // tree.insert(root, 1220911591, false);
+        // tree.insert(root, 153709483, false);
+        // tree.insert(root, 1323517163, false);
+        // tree.insert(root, 1451071572, false);
+        // tree.insert(root, 1494828198, false);
+        // tree.insert(root, 868738912, false);
+        // tree.insert(root, 1729539890, false);
+        // tree.insert(root, 1853336516, false);
+        // tree.insert(root, 1410016230, false);
+
+        // tree.delete(tree.root, 1220911591, false);
         
         // System.out.println("--------------------------------");
         // tree.myorder(root);
         // tree.print(root);
         // System.out.println();
 
-        // tree.delete(tree.root, 10, false);
-        // System.out.println("_______________________");
-        // tree.delete(tree.root, 1, false);
-        // System.out.println("_______________________");
-        // tree.delete(tree.root, 7, false);
-        // System.out.println("_______________________");
-        // tree.delete(tree.root, 5, false);
+        Tree tree = new Tree();
+        Node root = new Node();
+        root.isRoot = true;
+        tree.root = root;
+        String name = "";
+    
+        while(true){
+            int choice;
+            Scanner sc = new Scanner(System.in);
+            System.out.print("1.insertion 2.deletion. 3.quit : ");
+            choice = sc.nextInt();
+            int count = 1000000;
 
-        // while(true){
-        //     int choice;
-        //     Scanner sc = new Scanner(System.in);
-        //     System.out.print("1.insertion 2.deletion. 3.quit : ");
-        //     choice = sc.nextInt();
-        //     int count = 1000000;
+            if(choice == 1){
+                
+                Scanner sc2 = new Scanner(System.in);
+                name = sc2.nextLine();
 
-        //     if(choice == 1){
-        //         String name;
-        //         Scanner sc2 = new Scanner(System.in);
-        //         name = sc2.nextLine();
+                File csv = new File(name);
+                BufferedReader br = null;
+                br = new BufferedReader(new FileReader(csv));
+                for(int i=0;i<count;i++){
+                    String line = "";
+                    line = br.readLine();
+                    String[] lineArr = line.split("\t");
+                    System.out.println(lineArr[1]);
+                    tree.insert(root, Integer.parseInt(lineArr[1]), false);
+                }
+                br.close();
 
-        //         Tree tree = new Tree();
-        //         Node root = new Node();
-        //         root.isRoot = true;
-        //         tree.root = root;
+                br = new BufferedReader(new FileReader(csv));
+                File csv2 = new File("output.csv");
+                BufferedWriter bw = null; // 출력 스트림 생성
+                bw = new BufferedWriter(new FileWriter(csv2));
 
-        //         File csv = new File(name);
-        //         BufferedReader br = null;
-        //         br = new BufferedReader(new FileReader(csv));
-        //         for(int i=0;i<count;i++){
-        //             String line = "";
-        //             line = br.readLine();
-        //             String[] lineArr = line.split("\t");
-        //             System.out.println(lineArr[1]);
-        //             tree.insert(root, Integer.parseInt(lineArr[1]), false);
-        //         }
-        //         br.close();
+                for(int i=0;i<count;i++){
+                    String line = "";
+                    line = br.readLine();
+                    String[] lineArr = line.split("\t");
+                    System.out.println(lineArr[1]);
+                    int target = Integer.parseInt(lineArr[1]);
 
-        //         br = new BufferedReader(new FileReader(csv));
-        //         File csv2 = new File("output.csv");
-        //         BufferedWriter bw = null; // 출력 스트림 생성
-        //         bw = new BufferedWriter(new FileWriter(csv2));
+                    if(tree.find(root, target) != null){
+                        bw.write((i+1) + "\t" + Integer.toString(target));
+                        bw.newLine();
+                    }
+                }
+                bw.close();
 
-        //         for(int i=0;i<count;i++){
-        //             String line = "";
-        //             line = br.readLine();
-        //             String[] lineArr = line.split("\t");
-        //             System.out.println(lineArr[1]);
-        //             int target = Integer.parseInt(lineArr[1]);
+                BufferedReader br3 = new BufferedReader(new FileReader(csv));
+                BufferedReader br4 = new BufferedReader(new FileReader(csv2));
+                boolean check = true;
+                for(int i=0;i<count;i++){
+                    String line1 = "";
+                    line1 = br3.readLine();
+                    String[] lineArr1 = line1.split("\t");
+                    int comp1 = Integer.parseInt(lineArr1[1]);
 
-        //             if(tree.find(root, target) != null){
-        //                 bw.write(Integer.toString(target));
-        //                 bw.newLine();
-        //             }
-        //         }
-        //         bw.close();
+                    String line2 = "";
+                    line2 = br4.readLine();
+                    String[] lineArr2 = line2.split("\t");
+                    int comp2 = Integer.parseInt(lineArr2[1]);
 
-        //         BufferedReader br3 = new BufferedReader(new FileReader(csv));
-        //         BufferedReader br4 = new BufferedReader(new FileReader(csv2));
-        //         boolean check = true;
-        //         for(int i=0;i<count;i++){
-        //             String line1 = "";
-        //             line1 = br3.readLine();
-        //             String[] lineArr1 = line1.split("\t");
-        //             int comp1 = Integer.parseInt(lineArr1[1]);
+                    if(comp1 != comp2)
+                        check = false;
+                }
+                System.out.println(check);
+            }
+            else if(choice == 2){
+                String name2;
+                Scanner sc2 = new Scanner(System.in);
+                name2 = sc2.nextLine();
 
-        //             String line2 = "";
-        //             line2 = br4.readLine();
-        //             int comp2 = Integer.parseInt(line2);
+                File csv = new File(name2);
+                BufferedReader br = null;
+                br = new BufferedReader(new FileReader(csv));
+                for(int i=0;i<count/2;i++){
+                    String line = "";
+                    line = br.readLine();
+                    String[] lineArr = line.split("\t");
+                    System.out.println(lineArr[1]);
+                    tree.delete(tree.root, Integer.parseInt(lineArr[1]), false);
+                }
+                br.close();
 
-        //             if(comp1 != comp2)
-        //                 check = false;
-        //         }
-        //         System.out.println(check);
-        //     }
-        //     else{
-        //         break;
-        //     }
-        // }
+                br = new BufferedReader(new FileReader(new File(name)));
+                File csv2 = new File("delete_output.csv");
+                BufferedWriter bw = null; // 출력 스트림 생성
+                bw = new BufferedWriter(new FileWriter(csv2));
+
+                for(int i=0;i<count;i++){
+                    String line = "";
+                    line = br.readLine();
+                    String[] lineArr = line.split("\t");
+                    int target = Integer.parseInt(lineArr[1]);
+
+                    if(tree.find(tree.root, target).key.contains(Integer.valueOf(target)) == true){
+                        // System.out.print("Found " + target + " at ");
+                        // tree.print(tree.find(tree.root, target));
+                        // System.out.println();
+                        bw.write((i+1) + "\t" + Integer.toString(target));
+                        bw.newLine();
+                    }
+                    else{
+                        // System.out.print("Not Found " + target + " at ");
+                        // tree.print(tree.find(tree.root, target));
+                        // System.out.println();
+                        bw.write((i+1) + "\t" +"N/A");
+                        bw.newLine();
+                    }
+                }
+                bw.close();
+
+                File csv3 = new File("delete_compare.csv"); 
+
+                BufferedReader br3 = new BufferedReader(new FileReader(csv3));
+                BufferedReader br4 = new BufferedReader(new FileReader(csv2));
+                boolean check = true;
+                for(int i=0;i<count;i++){
+                    //System.out.println(i+1);
+                    String line1 = "";
+                    line1 = br3.readLine();
+                    String[] lineArr1 = line1.split("\t");
+                    int comp1;
+                    //System.out.println(lineArr1[1].contains("N/A"));
+                    if(lineArr1[1].contains("N/A") == false)
+                        comp1 = Integer.parseInt(lineArr1[1]);
+                    else
+                        comp1 = -1;
+
+                    String line2 = "";
+                    line2 = br4.readLine();
+                    String[] lineArr2 = line2.split("\t");
+                    int comp2;
+                    //System.out.println(lineArr2[1].contains("N/A"));
+                    if(lineArr2[1].contains("N/A") == false)
+                        comp2 = Integer.parseInt(lineArr2[1]);
+                    else
+                        comp2 = -1;
+
+                    if(comp1 != comp2)
+                        check = false;
+                }
+                System.out.println(check);
+            }
+            else{
+                break;
+            }
+        }
     }
 }
