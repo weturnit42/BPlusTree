@@ -282,14 +282,14 @@ class Tree {
                     idx = 2;
             }
         }
-        System.out.println("Deleting " + val + ", recursive_up is " + recursive_up + ", idx : " + idx);
-        //int tempCnt = node.pointer.size(); // 위험한 코드 20220225
-        // for(int i=node.pointer.size()-1;i>=0;i--){
-        //     if(node.pointer.get(i) == null)
-        //         tempCnt--;
-        //     if(node.pointer.get(i) != null)
-        //         break;
-        // }
+        //System.out.println("Deleting " + val + ", recursive_up is " + recursive_up + ", idx : " + idx);
+        int tempCnt = node.pointer.size(); // 위험한 코드 20220225
+        for(int i=node.pointer.size()-1;i>=0;i--){
+            if(node.pointer.get(i) == null)
+                tempCnt--;
+            if(node.pointer.get(i) != null)
+                break;
+        }
         if(recursive_up == true || node.key.contains(Integer.valueOf(val))){
             //System.out.println("case1");
             if(node.key.size() == 2){
@@ -711,40 +711,24 @@ class Tree {
             }
         }
 
-        // else if(tempCnt == 3){ // 위험한 코드 20220225
-        //     if(node.key.size() == 2){ // 여기도 위험한 코드 20220225
-        //         if (val < node.key.get(0))
-        //             delete(node.pointer.get(0), val, false);
-        //         else if (val > node.key.get(0) && val < node.key.get(1))
-        //             delete(node.pointer.get(1), val, false);
-        //         else if (val > node.key.get(1))
-        //             delete(node.pointer.get(2), val, false);
-        //     }
-        //     else if(node.key.size() == 1){
-        //         if (val < node.key.get(0))
-        //             delete(node.pointer.get(0), val, false);
-        //         else if (val > node.key.get(0))
-        //             delete(node.pointer.get(1), val, false);
-        //     }
-        // }
-
-        // else if(tempCnt == 2){ // 위험한 코드 20220225 이렇게 두 개는 원래 node.key.size() == 2, node.key.size() == 1이었음
-        //     if (val < node.key.get(0))
-        //         delete(node.pointer.get(0), val, false);
-        //     else if (val > node.key.get(0))
-        //         delete(node.pointer.get(1), val, false);
-        // }
-
-        else if(node.key.size() == 2){
-            if (val < node.key.get(0))
-                delete(node.pointer.get(0), val, false);
-            else if (val > node.key.get(0) && val < node.key.get(1))
-                delete(node.pointer.get(1), val, false);
-            else if (val > node.key.get(1))
-                delete(node.pointer.get(2), val, false);
+        else if(tempCnt == 3){ // 위험한 코드 20220225
+            if(node.key.size() == 2){ // 여기도 위험한 코드 20220225
+                if (val < node.key.get(0))
+                    delete(node.pointer.get(0), val, false);
+                else if (val > node.key.get(0) && val < node.key.get(1))
+                    delete(node.pointer.get(1), val, false);
+                else if (val > node.key.get(1))
+                    delete(node.pointer.get(2), val, false);
+            }
+            else if(node.key.size() == 1){
+                if (val < node.key.get(0))
+                    delete(node.pointer.get(0), val, false);
+                else if (val > node.key.get(0))
+                    delete(node.pointer.get(1), val, false);
+            }
         }
 
-        else if(node.key.size() == 1){
+        else if(tempCnt == 2){ // 위험한 코드 20220225 이렇게 두 개는 원래 node.key.size() == 2, node.key.size() == 1이었음
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
             else if (val > node.key.get(0))
@@ -1181,7 +1165,7 @@ public class TwoThreeTree {
                     if(lineArr2[1].contains("N/A") == false)
                         comp2 = Integer.parseInt(lineArr2[1]);
                     
-                    if(comp1 != comp2)
+                    if(!lineArr1[1].contains("N/A") && !lineArr2[1].contains("N/A") && comp1 != comp2)
                         check = false;
                 }
                 System.out.println(check);
