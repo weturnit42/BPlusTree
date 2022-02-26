@@ -79,7 +79,7 @@ class Tree {
     }
 
     public void insert(Node node, int val, boolean recursive_up) {
-        System.out.println("Inserting " + val + ", recursive_up : " + recursive_up);
+        //System.out.println("Inserting " + val + ", recursive_up : " + recursive_up);
         if(node.key.size() == 0) { //시작인 경우
             node.key.add(val);
             node.pointer.add(null);
@@ -257,7 +257,9 @@ class Tree {
         //         System.out.println("Something wrong");
         // }
         int idx = 0;
-        if(node.parent == null && node.key.size() == 0){
+        if(node == null)  // 위험한 코드 20220225
+            return;
+        if(node.parent == null && (node.key.size() == 0)){
             this.root = node.pointer.get(0);
             this.root.isRoot = true;
         }
@@ -281,7 +283,13 @@ class Tree {
             }
         }
         System.out.println("Deleting " + val + ", recursive_up is " + recursive_up + ", idx : " + idx);
-
+        //int tempCnt = node.pointer.size(); // 위험한 코드 20220225
+        // for(int i=node.pointer.size()-1;i>=0;i--){
+        //     if(node.pointer.get(i) == null)
+        //         tempCnt--;
+        //     if(node.pointer.get(i) != null)
+        //         break;
+        // }
         if(recursive_up == true || node.key.contains(Integer.valueOf(val))){
             //System.out.println("case1");
             if(node.key.size() == 2){
@@ -529,7 +537,10 @@ class Tree {
                             node.pointer.add(1, node.parent.pointer.get(1).pointer.get(0));
                             if(node.pointer.get(1) != null)
                                 node.pointer.get(1).parent = node;
-                            node.pointer.add(2, node.parent.pointer.get(1).pointer.get(1));
+                            if(node.parent.pointer.get(1).pointer.size() != 1) //
+                                node.pointer.add(2, node.parent.pointer.get(1).pointer.get(1));
+                            else
+                                node.pointer.add(2, null);
                             if(node.pointer.get(2) != null)
                                 node.pointer.get(2).parent = node;
                             node.parent.pointer.remove(1);
@@ -583,7 +594,7 @@ class Tree {
                             // print(node.parent.pointer.get(0).pointer.get(1));
                             // System.out.println();
                             if(node.parent.pointer.get(0).pointer.size() == 2) {
-                                System.out.println("Dang1");//위험한 코드 20220218
+                                //System.out.println("Dang1");//위험한 코드 20220218
                                 node.parent.pointer.get(0).pointer.add(null);
                             
                             }
@@ -609,7 +620,10 @@ class Tree {
                             node.pointer.add(1, node.parent.pointer.get(1).pointer.get(0));
                             if(node.pointer.get(1) != null)
                                 node.pointer.get(1).parent = node;
-                            node.pointer.add(2, node.parent.pointer.get(1).pointer.get(1));
+                            if(node.parent.pointer.get(1).pointer.size() != 1)
+                                node.pointer.add(2, node.parent.pointer.get(1).pointer.get(1));
+                            else
+                                node.pointer.add(2, null);
                             if(node.pointer.get(2) != null)
                                 node.pointer.get(2).parent = node;
                             node.parent.pointer.remove(1);
@@ -658,7 +672,7 @@ class Tree {
                             // print(node.parent.pointer.get(0).pointer.get(2));
                             // System.out.println();
                             if(node.parent.pointer.get(0).pointer.size() == 2){ //위험한 코드 20220218
-                                System.out.println("Dang2");
+                                //System.out.println("Dang2");
                                 node.parent.pointer.get(0).pointer.add(null);
                             }
                             node.pointer.add(0, node.parent.pointer.get(0).pointer.get(2));
@@ -684,7 +698,7 @@ class Tree {
                             node.parent.key.add(node.parent.pointer.get(1).key.get(1));
                             node.parent.pointer.get(1).key.remove(1);
                             if(node.parent.pointer.get(1).pointer.size() == 2){ //위험한 코드 20220218
-                                System.out.println("Dang3");
+                                //System.out.println("Dang3");
                                 node.parent.pointer.get(1).pointer.add(null);
                             }
                             node.pointer.add(0, node.parent.pointer.get(1).pointer.get(2));
@@ -696,6 +710,31 @@ class Tree {
                 }
             }
         }
+
+        // else if(tempCnt == 3){ // 위험한 코드 20220225
+        //     if(node.key.size() == 2){ // 여기도 위험한 코드 20220225
+        //         if (val < node.key.get(0))
+        //             delete(node.pointer.get(0), val, false);
+        //         else if (val > node.key.get(0) && val < node.key.get(1))
+        //             delete(node.pointer.get(1), val, false);
+        //         else if (val > node.key.get(1))
+        //             delete(node.pointer.get(2), val, false);
+        //     }
+        //     else if(node.key.size() == 1){
+        //         if (val < node.key.get(0))
+        //             delete(node.pointer.get(0), val, false);
+        //         else if (val > node.key.get(0))
+        //             delete(node.pointer.get(1), val, false);
+        //     }
+        // }
+
+        // else if(tempCnt == 2){ // 위험한 코드 20220225 이렇게 두 개는 원래 node.key.size() == 2, node.key.size() == 1이었음
+        //     if (val < node.key.get(0))
+        //         delete(node.pointer.get(0), val, false);
+        //     else if (val > node.key.get(0))
+        //         delete(node.pointer.get(1), val, false);
+        // }
+
         else if(node.key.size() == 2){
             if (val < node.key.get(0))
                 delete(node.pointer.get(0), val, false);
@@ -739,11 +778,11 @@ class Tree {
                     // System.out.println(node.pointer.get(node.pointer.size()-1) == null);
                     int dangIdx;
                     if(node.key.size() == 2){ //위험한 코드
-                        System.out.println("Dang4-1");
+                        //System.out.println("Dang4-1");
                         dangIdx = 2;
                     }
                     else{
-                        System.out.println("Dang4-2");
+                        //System.out.println("Dang4-2");
                         dangIdx = 1;
                     }
                     return findBiggestSmallNode(node.pointer.get(dangIdx), node.pointer.get(dangIdx).key.get(node.pointer.get(dangIdx).key.size()-1), true);
@@ -781,11 +820,11 @@ class Tree {
                     //System.out.println("type 2-2-2");
                     int dangIdx;
                     if(node.key.size() == 2) {
-                        System.out.println("Dang5-1");//위험한 코드
+                        //System.out.println("Dang5-1");//위험한 코드
                         dangIdx = 2;
                     }
                     else{
-                        System.out.println("Dang5-2");
+                        //System.out.println("Dang5-2");
                         dangIdx = 1;
                     }
                     return findBiggestSmallNode(node.pointer.get(dangIdx), node.pointer.get(dangIdx).key.get(node.pointer.get(dangIdx).key.size()-1), true);
@@ -804,9 +843,12 @@ class Tree {
             if(recursive_down == false) {
                 if(node.pointer.get(1) == null)
                     return -1;
+                
+                else if(node.pointer.get(1).pointer.size() == 2 && node.pointer.get(1).pointer.get(1) == null)
+                    return node.pointer.get(1).key.get(0); //위험한 코드 20220225
 
-                else if(node.pointer.get(1).pointer.get(1) == null)
-                    return node.pointer.get(1).key.get(0);
+                else if(node.pointer.get(1).pointer.size() == 1 && node.pointer.get(1).pointer.get(0) == null)
+                    return node.pointer.get(1).key.get(0); //위험한 코드 20220225
 
                 else
                     return findSmallestBigNode(node.pointer.get(1), node.pointer.get(1).key.get(0), true);
@@ -947,8 +989,8 @@ class RandomizedNumber {
 
 public class TwoThreeTree {
     public static void main(String[] args) throws Exception {
-        // int size = 10000;
-        // int del = 5000;
+        // int size = 1000000;
+        // int del = 500000;
         // RandomizedNumber rn = new RandomizedNumber(size);
 
         // Tree tree = new Tree();
@@ -1028,7 +1070,7 @@ public class TwoThreeTree {
                     String line = "";
                     line = br.readLine();
                     String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
+                    //System.out.println(lineArr[1]);
                     tree.insert(root, Integer.parseInt(lineArr[1]), false);
                 }
                 br.close();
@@ -1042,7 +1084,7 @@ public class TwoThreeTree {
                     String line = "";
                     line = br.readLine();
                     String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
+                    //System.out.println(lineArr[1]);
                     int target = Integer.parseInt(lineArr[1]);
 
                     if(tree.find(root, target) != null){
@@ -1083,7 +1125,7 @@ public class TwoThreeTree {
                     String line = "";
                     line = br.readLine();
                     String[] lineArr = line.split("\t");
-                    System.out.println(lineArr[1]);
+                    //System.out.println(lineArr[1]);
                     tree.delete(tree.root, Integer.parseInt(lineArr[1]), false);
                 }
                 br.close();
@@ -1126,23 +1168,19 @@ public class TwoThreeTree {
                     String line1 = "";
                     line1 = br3.readLine();
                     String[] lineArr1 = line1.split("\t");
-                    int comp1;
+                    int comp1=0;
                     //System.out.println(lineArr1[1].contains("N/A"));
                     if(lineArr1[1].contains("N/A") == false)
                         comp1 = Integer.parseInt(lineArr1[1]);
-                    else
-                        comp1 = -1;
 
                     String line2 = "";
                     line2 = br4.readLine();
                     String[] lineArr2 = line2.split("\t");
-                    int comp2;
+                    int comp2=0;
                     //System.out.println(lineArr2[1].contains("N/A"));
                     if(lineArr2[1].contains("N/A") == false)
                         comp2 = Integer.parseInt(lineArr2[1]);
-                    else
-                        comp2 = -1;
-
+                    
                     if(comp1 != comp2)
                         check = false;
                 }
